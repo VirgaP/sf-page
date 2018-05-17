@@ -2,7 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\About;
+use App\Entity\Message;
+use App\Form\MessageType;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class DefaultController extends Controller
@@ -15,5 +20,42 @@ class DefaultController extends Controller
         return $this->render('default/home.html.twig', [
             'controller_name' => 'DefaultController',
         ]);
+    }
+
+    /**
+     * @Route("/susisiekti", name="message_new", methods="GET|POST")
+     */
+    public function new(Request $request): Response
+    {
+        $message = new Message();
+        $form = $this->createForm(MessageType::class, $message);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($message);
+            $em->flush();
+
+            $this->addFlash('success', "Žinutė išsiųsta");
+
+            return $this->redirectToRoute('message_new');
+        }
+
+        return $this->render('message/new.html.twig', [
+            'message' => $message,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/apie", name="about_us")
+     */
+    public function about()
+    {
+        $about = $this->getDoctrine()
+            ->getRepository(About::class)
+            ->findAll();
+
+        return $this->render('about.html.twig', ['about' => $about]);
     }
 }
