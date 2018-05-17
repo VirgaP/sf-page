@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Animal{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-filestyle@1.2.1/src/bootstrap-filestyle.min.js"></script>
+{% endblock %}
+
+{% block body %}
+    <h1>Create new Animal</h1>
+
+    {{ include('animal/_form.html.twig') }}
+
+    <a href="{{ path('animal_index') }}">back to list</a>
+{% endblock %}
