@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Apie mus{% endblock %}
+
+{% block body %}
+    <h1>Apie mus</h1>
+
+    {% for data in about %}
+        <h4>Telefonas: {{ data.phoneNumber }}</h4>
+        <h4>Adresas: {{ data.address }}</h4>
+        <p>{{ data.text }}</p>
+    {% endfor %}
+
+{% endblock %}
