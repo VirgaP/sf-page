@@ -11,4 +11,8 @@
         <p>{{ data.text }}</p>
     {% endfor %}
 
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('about_edit', {'id': '1'}) }}">Koreguoti puslapį</a>
+    {% endif %}
+
 {% endblock %}

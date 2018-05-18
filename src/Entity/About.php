@@ -26,7 +26,7 @@ class About
     private $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      */
     private $text;
@@ -42,6 +42,14 @@ class About
      * @Assert\NotBlank()
      */
     private $address;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * @return mixed

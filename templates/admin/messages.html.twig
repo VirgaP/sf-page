@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Žinutės{% endblock %}
+
+{% block body %}
+    <h1>Žinutės</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Vardas</th>
+            <th>El.paštas</th>
+            <th>Telefono nr.</th>
+            <th>Žinutė</th>
+            <th>Žinutės laikas</th>
+            <th>Veiksmai</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for message in messages %}
+            <tr>
+                <td>{{ message.name }}</td>
+                <td>{{ message.email }}</td>
+                <td>{{ message.phoneNumber }}</td>
+                <td>{{ message.message }}</td>
+                <td>{{ message.createdAt|date('Y-m-d H:i:s') }}</td>
+                <td>
+                    <a href="{{ path('messages_archive', {'id': message.id}) }}" class="btn btn-warning btn-xs active"
+                       role="button">Perkelti į archyvą</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">Žinučių nėra</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('messages_seen') }}" class="btn btn-primary active"
+       role="button">Žiūrėti skaitytas žinutes</a>
+{% endblock %}

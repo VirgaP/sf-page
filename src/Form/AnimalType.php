@@ -28,6 +28,7 @@ class AnimalType extends AbstractType
             ])
             ->add('picture', FileType::class, [
                 'label' => 'Pridėti nuotrauką (galimi tik JPG ir PNG formatai)',
+                'data_class' => null,
                 'attr' => [
                     'class' => 'filestyle',
                     'data-input' => 'false',
