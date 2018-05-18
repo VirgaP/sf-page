@@ -2,6 +2,11 @@
 
 {% block title %}Animal{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="/public/css/comments.css">
+{% endblock %}
+
 {% block body %}
     <h1>Animal</h1>
 
@@ -25,7 +30,7 @@
             </tr>
             <tr>
                 <th>Picture</th>
-                <td>{{ animal.picture }}</td>
+                <td><img src="/uploads/{{ animal.picture }}"></td>
             </tr>
             <tr>
                 <th>IsGiven</th>
@@ -47,4 +52,51 @@
     <a href="{{ path('animal_edit', {'id': animal.id}) }}">edit</a>
 
     {{ include('animal/_delete_form.html.twig') }}
+
+    {% if comments %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+            <h2 class="page-header">Komentarai</h2>
+                {% for comment in comments %}
+                <section class="comment-list">
+                    <!-- Comment -->
+                    <article class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="panel panel-default arrow left">
+                                <div class="panel-body">
+                                    <header class="text-left">
+                                        <div class="comment-user"><i class="fa fa-user"></i> {{ comment.user.firstName }} {{ comment.user.lastName }}</div>
+                                        <time class="comment-date" datetime="16-12-2014 01:05"><i class="fa fa-clock-o"></i> {{ comment.createdAt|date('Y-m-d H:i:s') }}</time>
+                                    </header>
+                                    <div class="comment-post">
+                                        <p>
+                                            {{ comment.comment }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </section>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div>
+        <dl>
+            <dd>
+                {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <button class="btn" formnovalidate>{{ button_label|default('Komentuoti') }}</button>
+                {{ form_end(form) }}
+            </dd>
+        </dl>
+
+    </div>
+
+
 {% endblock %}

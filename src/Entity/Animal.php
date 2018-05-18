@@ -73,7 +73,8 @@ class Animal
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="animal")
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="animal", orphanRemoval=true, cascade={"persist"})
+     *
      */
     private $comment;
 

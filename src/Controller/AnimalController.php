@@ -3,8 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Animal;
+use App\Entity\Comment;
 use App\Form\AnimalType;
+use App\Form\CommentType;
+use App\Repository\CommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -36,10 +41,29 @@ class AnimalController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $imageFile = $form->get('picture')->getData();
+            if ($imageFile != null) {
+                /** @var UploadedFile $file */
+                $animal = $form->getData();
+                $file = $animal->getPicture();
+                $fileName = md5(uniqid()).'.'.$file->guessExtension();
+                $file->move(
+                    $this->getParameter('upload_directory'),
+                    $fileName
+                );
+                $animal->setPicture($fileName);
+            } else {
+                $animal->setPicture('placeholder.png');
+            }
+
+            $animal->setUser($this->getUser());
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($animal);
             $em->flush();
 
+            $this->addFlash('success', "Naujas gyvunas sukurtas");
             return $this->redirectToRoute('animal_index');
         }
 
@@ -50,11 +74,30 @@ class AnimalController extends Controller
     }
 
     /**
-     * @Route("/{id}", name="animal_show", methods="GET")
+     * @Route("/{id}", name="animal_show", methods="GET|POST")
      */
-    public function show(Animal $animal): Response
+    public function show(Animal $animal, Request $request, CommentRepository $repository): Response
     {
-        return $this->render('animal/show.html.twig', ['animal' => $animal]);
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $comment->setAnimal($animal);
+            $comment->setUser($this->getUser());
+            $em->persist($comment);
+            $em->flush();
+
+            $this->addFlash('success', "Komentaras nusiųstas patvirtinimui. Komentaras bus rodomas tik jį patvirtinus.");
+            return $this->redirectToRoute('animal_show', ['id' => $animal->getId()]);
+        }
+
+        return $this->render('animal/show.html.twig', [
+            'animal' => $animal,
+            'form' => $form->createView(),
+            'comments' => $repository->findAllApprovedByAnimal($animal->getId()),
+        ]);
     }
 
     /**
@@ -62,12 +105,33 @@ class AnimalController extends Controller
      */
     public function edit(Request $request, Animal $animal): Response
     {
+        $currentPicture = $animal->getPicture();
         $form = $this->createForm(AnimalType::class, $animal);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            // Checks if user changes picture
+            $imageFile = $form->get('picture')->getData();
+            if ($imageFile != null) {
+                // Deletes old file if not placeholder
+                if ($currentPicture != 'placeholder.png'){
+                    $filesystem = new Filesystem();
+                    $filesystem->remove($this->getParameter('upload_directory').$currentPicture);
+                }
 
+                // Adds new file
+                $newFileName = md5(uniqid()).'.'.$imageFile->guessExtension();
+                $imageFile->move(
+                    $this->getParameter('upload_directory'),
+                    $newFileName
+                );
+                $animal->setPicture($newFileName);
+                $this->getDoctrine()->getManager()->flush();
+            } else { // If picture remains same
+                $animal->setPicture($currentPicture);
+                $this->getDoctrine()->getManager()->flush();
+            }
+            $this->addFlash('success', "Duomenys atnaujinti");
             return $this->redirectToRoute('animal_edit', ['id' => $animal->getId()]);
         }
 
@@ -83,11 +147,18 @@ class AnimalController extends Controller
     public function delete(Request $request, Animal $animal): Response
     {
         if ($this->isCsrfTokenValid('delete'.$animal->getId(), $request->request->get('_token'))) {
+
+            // Deletes file from server
+            $filename = $animal->getPicture();
+            $filesystem = new Filesystem();
+            $filesystem->remove($this->getParameter('upload_directory').$filename);
+
             $em = $this->getDoctrine()->getManager();
             $em->remove($animal);
             $em->flush();
         }
 
+        $this->addFlash('success', "Gyvūnas ištrintas");
         return $this->redirectToRoute('animal_index');
     }
 }

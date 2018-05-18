@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Patvirtinti komentarai{% endblock %}
+
+{% block body %}
+    <h1>Patvirtinti komentarai</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Vartotojas</th>
+            <th>Vartotojo el.paštas</th>
+            <th>Gyvūnas</th>
+            <th>Gyvūno aprašymas</th>
+            <th>Komentaras</th>
+            <th>Komentaro laikas</th>
+            <th>Veiksmai</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for comment in comments %}
+            <tr>
+                <td>{{ comment.user.firstName }} {{ comment.user.lastName }}</td>
+                <td>{{ comment.user.email }}</td>
+                <td>{{ comment.animal.species }}</td>
+                <td>{{ comment.animal.description }}</td>
+                <td>{{ comment.comment }}</td>
+                <td>{{ comment.createdAt|date('Y-m-d H:i:s') }}</td>
+                <td>
+                    {{ include('comment/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">Patvirtintų komentarų nėra</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('comment_index') }}" class="btn btn-primary active"
+       role="button">Grįžti į komentarų sąrašą</a>
+{% endblock %}
