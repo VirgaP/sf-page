@@ -1,0 +1,43 @@
+<h2 style="text-align: center; margin: 20px 40px; font-family: 'Pacifico', cursive;">Mūsų globotiniai</h2>
+<div class="container-fluid" style="width: 90%; background-color: #B9D1CA;">
+<div class="row box">
+{% set animalsCollection = [] %}
+    {% for animal in animals | reverse %}
+    {% set animalsCollection = animalsCollection | merge ([animal]) %}
+    {% endfor %}
+
+{% for column in animalsCollection | batch(4)  %}
+<div class="col-md-4">
+
+    <div class="card" style="padding: 5px; margin-top: 10px; width: 380px">
+    {% for animal in animals %}
+        {#{% if (animal.isAvailable == true) %}#}
+           <a href="{{ path('animal_show', {'id': animal.id}) }}">
+           {% if (animal.species == 'katinas') %}
+           <img class="card-img-top" src="{{ absolute_url(asset('images/cat.png')) }}" width="380" alt="Cat!" />
+           {% else %}
+           <img class="card-img-top" src="{{ absolute_url(asset('images/dog.png')) }}" width="380" alt="Dog!" />
+           {% endif %}
+           </a>
+        <div class="card-body" style="background-color: #C7E5CD">
+           <h4 class="card-title">Gyvūno vardas: {{ animal.name }}</h4>
+            <h5 class="card-subtitle">Gyvūno amžius: {{ animal.age }}</h5>
+           <p class="card-text"><em>{{ animal.description }}</em></p>
+           <a href="{{ path('message_new') }}" class="btn btn-primary">Susisiekti</a>
+       </div>
+{#{% endif %}#}
+            {% endfor %}
+        </div>
+</div>
+    {% endfor %}
+</div>
+
+
+<div class="navigation text-center">
+    {{ knp_pagination_render(animals) }}
+    {#animals passed from hoemcottroller index#}
+</div>
+
+</div>
+
+

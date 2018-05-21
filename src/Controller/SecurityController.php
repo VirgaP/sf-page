@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\LoginType;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +15,11 @@ class SecurityController extends Controller
      */
     public function login(Request $request)
     {
-        return $this->render('security/login.html.twig');
+        $form = $this->createForm(LoginType::class);
+        return $this->render('security/login.html.twig', [
+            'login_form' => $form->createView(),
+        ]);
+
     }
 
     /**
@@ -22,6 +27,6 @@ class SecurityController extends Controller
      */
     public function logout(Request $request)
     {
-        return $this->render('home');
+        return $this->redirectToRoute('home');
     }
 }

@@ -20,12 +20,19 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Animal
 {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank()
+     */
+    private $name;
 
     /**
      * @ORM\Column(type="string")
@@ -54,7 +61,7 @@ class Animal
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isGiven = 0;
+    private $isAvailable = 0;
 
     /**
      * @ORM\Column(type="datetime")
@@ -106,6 +113,23 @@ class Animal
     {
         return $this->description;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name): void
+    {
+        $this->name = $name;
+    }
+
 
     /**
      * @param mixed $description
@@ -166,17 +190,17 @@ class Animal
     /**
      * @return mixed
      */
-    public function getisGiven()
+    public function getIsAvailable()
     {
-        return $this->isGiven;
+        return $this->isAvailable;
     }
 
     /**
      * @param mixed $isGiven
      */
-    public function setIsGiven($isGiven): void
+    public function setIsAvailable($isAvailable): void
     {
-        $this->isGiven = $isGiven;
+        $this->isGiven = $isAvailable;
     }
 
     /**

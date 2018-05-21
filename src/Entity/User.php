@@ -154,7 +154,6 @@ class User implements UserInterface,\Serializable
         $this->plainPassword = $password;
     }
 
-
     public function getRoles()
     {
         $roles = $this->roles;
@@ -186,6 +185,7 @@ class User implements UserInterface,\Serializable
 
     public function eraseCredentials()
     {
+        $this->plainPassword = null;
     }
 
     /** @see \Serializable::serialize() */

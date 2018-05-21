@@ -1,0 +1,47 @@
+
+<nav class="navbar navbar-expand-sm bg-light navbar-light sticky-top">
+    <!-- Brand -->
+    <a class="navbar-brand" href="{{ path('home') }}">
+        <img src="{{ absolute_url(asset('images/logo.jpeg')) }}" width="50" alt="logo" />
+    </a>
+
+    <!-- Links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('about_us') }}">Apie mus</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Link 2</a>
+        </li>
+        {% if is_granted("ROLE_USER") %}
+        <li class="nav-item">
+            <a class="nav-link" href="#">Vartotojo paskyra</a>
+        </li>
+        {% endif %}
+        {% if is_granted("ROLE_ADMIN") %}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown"><i class="fas fa-lock"></i>
+                    Admin zona
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{{ path('user_index') }}">Vartotojai</a>
+                    <a class="dropdown-item" href="{{ path('about_us') }}">Apie mus</a>
+                    <a class="dropdown-item" href="{{ path('messages_index') }}">Zinutes</a>
+                </div>
+            </li>
+        {% endif %}
+
+        <!-- Dropdown -->
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown"><i class="fas fa-user"></i>
+                Prisijungti
+            </a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="{{ path('login') }}">Prisijungti</a>
+                <a class="dropdown-item" href="{{ path('logout') }}">Atsijungti</a>
+                <a class="dropdown-item" href="{{ path('registration') }}">Registruotis</a>
+            </div>
+        </li>
+    </ul>
+
+</nav>

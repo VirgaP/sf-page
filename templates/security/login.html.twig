@@ -1,17 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Login{% endblock %}
-
 {% block body %}
+    <div class="container" style="width: 60%">
+        <h3>Vartotoju prisijungimas <i class="fas fa-user-alt"></i></h3>
+        <h6>Prašome įvesti el. pašto adresą ir slaptažodį</h6>
     <form action="{{ path('login') }}" method="post">
-        <label for="username">Email:</label>
-        <input type="text" id="username" name="_username">
+        {{ form_widget(login_form) }}
 
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="_password">
-
-        <input type="hidden" name="_target_path" value="{{ path('home') }}">
-        <button type="submit" name="login">Login</button>
+        {# Note: ensure the submit name does not conflict with the form's name or it may clobber field data #}
+        {#<input type="submit" name="login" />#}
+        <button type="submit" name="login">Prisijungti</button>
     </form>
+    </div>
 {% endblock %}

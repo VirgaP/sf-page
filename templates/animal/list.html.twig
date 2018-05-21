@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {#<div class="count">#}
+        {#{{ pagination.getTotalItemCount }}#}
+    {#</div>#}
+
+    {#<table>#}
+        {#<tr>#}
+            {# sorting of properties based on query components #}
+            {#<th>{{ knp_pagination_sortable(pagination, 'Id', 'a.id') }}</th>#}
+            {#<th{% if pagination.isSorted('a.Species') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Species', 'a.species') }}</th>#}
+            {#<th>{{ knp_pagination_sortable(pagination, 'createdAt', ['a.date']) }}</th>#}
+        {#</tr>#}
+
+        {# table body #}
+
+        {#{% for animals in pagination %}#}
+
+            {#<tr {% if loop.index is odd %}class="color"{% endif %}>#}
+          <table>
+              <tr>
+              {% for animal in animals %}
+                <td>{{ animal.name }}</td>
+                <td>{{ animal.age }}</td>
+                <td>{{ animal.species }}</td>
+            {#</tr>#}
+        {% endfor %}
+              </tr>
+          </table>
+    {#{% endfor %}#}
+    {#</table>#}
+    {# display navigation #}
+    {#<div class="navigation">#}
+        {#{{ knp_pagination_render(pagination) }}#}
+    {#</div>#}
+    <div class="navigation text-center">
+        {{ knp_pagination_render(animals) }}
+    </div>
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+
