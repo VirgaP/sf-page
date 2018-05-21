@@ -13,7 +13,7 @@
                 <th>Age</th>
                 <th>Species</th>
                 <th>Picture</th>
-                <th>IsGiven</th>
+                <th>Is Available</th>
                 <th>CreatedAt</th>
                 <th>UpdatedAt</th>
                 <th>actions</th>
@@ -27,7 +27,7 @@
                 <td>{{ animal.age }}</td>
                 <td>{{ animal.species }}</td>
                 <td>{{ animal.picture }}</td>
-                <td>{{ animal.isGiven ? 'Yes' : 'No' }}</td>
+                <td>{{ animal.isAvailable ? 'Yes' : 'No' }}</td>
                 <td>{{ animal.createdAt ? animal.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ animal.updatedAt ? animal.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
@@ -44,4 +44,7 @@
     </table>
 
     <a href="{{ path('animal_new') }}">Create new</a>
+    {#<div class="pagerfanta">#}
+    {#{{ pagerfanta(animals, 'twitter_bootstrap4_translated', {routeName: 'animals_paginated'}) }}#}
+    {#</div>#}
 {% endblock %}

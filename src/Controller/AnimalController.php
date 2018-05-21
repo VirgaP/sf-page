@@ -6,13 +6,20 @@ use App\Entity\Animal;
 use App\Entity\Comment;
 use App\Form\AnimalType;
 use App\Form\CommentType;
+use App\Pagination\PaginatedCollection;
+use App\Repository\AnimalRepository;
 use App\Repository\CommentRepository;
+use Pagerfanta\Adapter\AdapterInterface;
+use Pagerfanta\Adapter\ArrayAdapter;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
 
 /**
  * @Route("/animal")
@@ -22,7 +29,7 @@ class AnimalController extends Controller
     /**
      * @Route("/", name="animal_index", methods="GET")
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $animals = $this->getDoctrine()
             ->getRepository(Animal::class)
@@ -31,6 +38,53 @@ class AnimalController extends Controller
         return $this->render('animal/index.html.twig', ['animals' => $animals]);
     }
 
+    /* *
+     * @param $page
+     * @param $key
+     * @param $type
+     * @return Response
+     * @Route ("/list/{type}/{page}/{key}", defaults={"page"=1, "key"="all", "type"="title"})
+     */
+//    public function listAction($page, $key, $type)
+//    {
+//        $em = $this->getDoctrine()->getManager();
+//        $rpp = $this->container->getParameter('animals_per_page');
+//
+//        $repo = $em->getRepository('App:Animal');
+//
+//        list($res, $totalcount) = $repo->getResultAndCount($page, $rpp, $key, $type);
+//
+//        $paginator = new Util\Paginator($page, $totalcount, $rpp);
+//        $pagelist = $paginator->getPagesList();
+//
+//        return $this->render('animal/list.html.twig', array('res' => $res, 'paginator' => $pagelist, 'cur' => $page, 'total' => $paginator->getTotalPages(), 'key'=>$key, 'type'=>$type));
+//    }
+
+
+    /**
+     * @Route("/list", name="animal_list", methods="GET")
+     */
+    public function listAction(Request $request)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $queryBuilder = $em->getRepository('App:Animal')->createQueryBuilder('a');
+
+        $query = $queryBuilder->getQuery();
+
+        $paginator  = $this->get('knp_paginator');
+
+        $animals = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 2)/*page number*/,
+            $request->query->getInt('limit', 10)/*limit per page*/
+        );
+
+        return $this->render('animal/list.html.twig', [
+            'animals' => $animals,
+        ]);
+    }
     /**
      * @Route("/new", name="animal_new", methods="GET|POST")
      */

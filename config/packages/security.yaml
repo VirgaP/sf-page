@@ -17,6 +17,10 @@ security:
              entity:
                 class: App\Entity\User
                 property: email
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -27,9 +31,11 @@ security:
             form_login:
                 login_path: login
                 check_path: login
+#                username_parameter: login[username]
+#                password_parameter: login[password]
             logout:
                 path: /logout
-                target: /
+                target: /home
             # activate different ways to authenticate
 
             # http_basic: true

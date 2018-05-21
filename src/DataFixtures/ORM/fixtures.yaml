@@ -1,0 +1,36 @@
+App\Entity\User:
+    user_{1..10}:
+        firstName: <firstName()>
+        lastName: <lastName()>
+        password: 'password'
+        email: <email()>
+        roles: ['ROLE_USER']
+
+App\Entity\Comment:
+    comment_{1..20}:
+        comment: <sentence()>
+        isApproved: <boolean(50)>
+        isSeen: <boolean(50)>
+        user: '@user_<numberBetween(1, 10)>'
+        animal: '@animal_<numberBetween(1, 20)>'
+
+App\Entity\Animal:
+    animal_{1..20}:
+        name: <animalName()>
+        description: <paragraph()>
+        age: <numberBetween(1, 6)>
+        species: '50%? katinas: šuo'
+#        picture: '50%? dog.png : cat.png'
+        isAvailable: <boolean(50)>
+        user: '@user_<numberBetween(1, 10)>'
+        comment: ['@comment_<numberBetween(1, 10)>'] #passing array collection
+
+
+App\Entity\Message:
+    message_{1..10}:
+        name: <lastName()>
+        email: <email()>
+        phoneNumber: <tollFreePhoneNumber()>
+        message: <paragraph()>
+        isSeen: <boolean(50)>
+

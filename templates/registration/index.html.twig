@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Registracija{% endblock %}
+
+{% block body %}
+    <style>
+        .container-fluid {
+            width: 70%
+        }
+        h2 {
+            text-align: center;
+        }
+    </style>
+    <h2>Vartotojų registracija</h2>
+    <div class="container-fluid">
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+
+    <button type="submit">Registruotis</button>
+    {{ form_end(form) }}
+    </div>
+{% endblock %}

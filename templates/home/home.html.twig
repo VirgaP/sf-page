@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bobikas{% endblock %}
+
+{% block body %}
+<style>
+body {
+    background-color: #F5F0E9;
+}
+</style>
+    {{ include('home/_about.html.twig') }}
+    {{ include('home/_grid.html.twig') }}
+
+{% endblock %}
