@@ -8,7 +8,7 @@
     {% for data in about %}
         <h4>Telefonas: {{ data.phoneNumber }}</h4>
         <h4>Adresas: {{ data.address }}</h4>
-        <p>{{ data.text }}</p>
+        <p>{{ data.text|raw }}</p>
     {% endfor %}
 
     {% if is_granted('ROLE_ADMIN') %}

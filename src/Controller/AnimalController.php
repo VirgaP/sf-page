@@ -86,6 +86,35 @@ class AnimalController extends Controller
         ]);
     }
     /**
+     * @Route("/filter", name="animal_index_filter", methods="GET")
+     */
+    public function indexFilter(Request $request): Response
+    {
+        $animalsRepository = $this->getDoctrine()
+            ->getManager()
+            ->getRepository(Animal::class);
+
+        $animalFilter = $request->query->get('animal');
+        $availableFilter = $request->query->get('available');
+
+        if ($animalFilter && (!isset($availableFilter) || $availableFilter == "")) {
+            $animals = $animalsRepository->filterAnimal($animalFilter);
+        } else if (!$animalFilter && isset($availableFilter) && ($availableFilter != "")) {
+            $animals = $animalsRepository->filterAvailable($availableFilter);
+        } else if ($animalFilter && isset($availableFilter) && ($availableFilter != "")) {
+            $animals = $animalsRepository->filterBoth($animalFilter, $availableFilter);
+        } else {
+            $animals = $animalsRepository->findAll();
+        }
+
+        return $this->render('animal/index-filter.html.twig', [
+            'animals' => $animals,
+            'animalFilter' => $animalFilter,
+            'availableFilter' => $availableFilter,
+        ]);
+    }
+
+    /**
      * @Route("/new", name="animal_new", methods="GET|POST")
      */
     public function new(Request $request): Response
@@ -117,7 +146,7 @@ class AnimalController extends Controller
             $em->persist($animal);
             $em->flush();
 
-            $this->addFlash('success', "Naujas gyvunas sukurtas");
+            $this->addFlash('success', "Naujas gyvūnas sukurtas");
             return $this->redirectToRoute('animal_index');
         }
 
