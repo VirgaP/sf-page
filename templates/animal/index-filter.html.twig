@@ -4,7 +4,24 @@
 
 {% block body %}
     <h1>Animal index</h1>
-
+    <div>
+        <h4>Filtrai</h4>
+        <form class="navbar-form" action="{{ path('animal_index_filter') }}">
+            <div class="form-group">
+                <select name="animal" onchange="this.form.submit()">
+                    <option selected value>- Gyvūnas -</option>
+                    <option {% if animalFilter == 'šuo' %} selected="selected" {% endif %} value="šuo">Šuo</option>
+                    <option {% if animalFilter == 'katė' %} selected="selected" {% endif %} value="katė">Katė</option>
+                    <option {% if animalFilter == 'paukštis' %} selected="selected" {% endif %} value="paukštis">Paukštis</option>
+                </select>
+                <select name="available" onchange="this.form.submit()">
+                    <option selected value>- Požymis -</option>
+                    <option {% if availableFilter == '0' %} selected="selected" {% endif %} value="0">Neatiduotas</option>
+                    <option {% if availableFilter == '1' %} selected="selected" {% endif %} value="1">Atiduotas</option>
+                </select>
+            </div>
+        </form>
+    </div>
     <table class="table">
         <thead>
             <tr>

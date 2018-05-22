@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\AnimalTestRepository")
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="animal")
  */
@@ -47,14 +47,14 @@ class Animal
 
     /**
      * @ORM\Column(type="string")
-     * @Assert\File(mimeTypes={"image/jpeg", "image/png", "image/tiff"})
+     * @Assert\File(mimeTypes={"image/jpeg", "image/png"})
      */
     private $picture;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isGiven = 0;
+    private $isAvailable = false;
 
     /**
      * @ORM\Column(type="datetime")
@@ -166,17 +166,17 @@ class Animal
     /**
      * @return mixed
      */
-    public function getisGiven()
+    public function getisAvailable()
     {
-        return $this->isGiven;
+        return $this->isAvailable;
     }
 
     /**
-     * @param mixed $isGiven
+     * @param mixed $isAvailable
      */
-    public function setIsGiven($isGiven): void
+    public function setIsAvailable($isAvailable): void
     {
-        $this->isGiven = $isGiven;
+        $this->isAvailable = $isAvailable;
     }
 
     /**
