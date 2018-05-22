@@ -31,6 +31,12 @@ class Animal
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
      */
+    private $name;
+
+    /**
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank()
+     */
     private $description;
 
     /**
@@ -108,6 +114,23 @@ class Animal
     }
 
     /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name): void
+    {
+        $this->name = $name;
+    }
+
+
+    /**
      * @param mixed $description
      */
     public function setDescription($description): void
@@ -166,7 +189,7 @@ class Animal
     /**
      * @return mixed
      */
-    public function getisAvailable()
+    public function getIsAvailable()
     {
         return $this->isAvailable;
     }
