@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vartotojo informacija{% endblock %}
+
+{% block body %}
+<style>
+    .container-fluid{
+        padding: 70px;
+        max-width: 90%;
+        border: solid 2px #dedede;
+        font-family: 'Quicksand', sans-serif;
+        background-color: white;
+    }
+
+</style>
+<div class="container-fluid">
+    <h1>Vartotojo informacija</h1>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Reg. Nr.</th>
+            <td>{{ user.id }}</td>
+        </tr>
+        <tr>
+            <th>Vardas</th>
+            <td>{{ user.firstName }}</td>
+        </tr>
+        <tr>
+            <th>Pavardė</th>
+            <td>{{ user.lastName }}</td>
+        </tr>
+        <tr>
+            <th>El.paštas</th>
+            <td>{{ user.email }}</td>
+        </tr>
+        <tr>
+            <th>Anketos sukūrimo laikas</th>
+            <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="{{ path('edit_profile_data', {'id': app.user.id}) }}">Atnaujinti anketos duomenis</a>
+    <table>
+        <thead>
+        <tr>
+            <th>Zinutes.</th>
+            <th>Gyvunai</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Siustos zinutes</td>
+            <td>Rezervuotas laiaks</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+    {% endblock %}
+

@@ -24,6 +24,7 @@ App\Entity\Animal:
         isAvailable: <boolean(50)>
         user: '@user_<numberBetween(1, 10)>'
         comment: ['@comment_<numberBetween(1, 10)>'] #passing array collection
+        heartCount: '<numberBetween(1, 100)>'
 
 
 App\Entity\Message:

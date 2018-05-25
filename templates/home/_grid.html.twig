@@ -1,43 +1,127 @@
-<h2 style="text-align: center; margin: 20px 40px; font-family: 'Pacifico', cursive;">Mūsų globotiniai</h2>
-<div class="container-fluid" style="width: 90%; background-color: #B9D1CA;">
-<div class="row box">
-{% set animalsCollection = [] %}
-    {% for animal in animals | reverse %}
-    {% set animalsCollection = animalsCollection | merge ([animal]) %}
-    {% endfor %}
+<style>
 
-{% for column in animalsCollection | batch(4)  %}
-<div class="col-md-4">
+    #cards-animals {
+        max-width: 900px;
+        z-index: -1;
+        align-content: center;
+        margin: 30px auto;
 
-    <div class="card" style="padding: 5px; margin-top: 10px; width: 380px">
-    {% for animal in animals %}
-        {#{% if (animal.isAvailable == true) %}#}
-           <a href="{{ path('animal_show', {'id': animal.id}) }}">
-           {% if (animal.species == 'katinas') %}
-           <img class="card-img-top" src="{{ absolute_url(asset('images/cat.png')) }}" width="380" alt="Cat!" />
-           {% else %}
-           <img class="card-img-top" src="{{ absolute_url(asset('images/dog.png')) }}" width="380" alt="Dog!" />
-           {% endif %}
-           </a>
-        <div class="card-body" style="background-color: #C7E5CD">
-           <h4 class="card-title">Gyvūno vardas: {{ animal.name }}</h4>
-            <h5 class="card-subtitle">Gyvūno amžius: {{ animal.age }}</h5>
-           <p class="card-text"><em>{{ animal.description }}</em></p>
-           <a href="{{ path('message_new') }}" class="btn btn-primary">Susisiekti</a>
-       </div>
-{#{% endif %}#}
-            {% endfor %}
+    }
+    .home-cards {
+        max-width: 95%;
+        height: auto;
+        z-index: -1;
+        align-content: center;
+        margin: auto;
+        padding-top: 20px;
+    }
+
+    #card-animal {
+        max-width:30%;
+        border: solid 3px lightgrey;
+        margin: 0.5%;
+        border-radius: 5px;
+    }
+
+    .card-title-small {
+        font-family: 'Pacifico', cursive;
+        font-size: 20px;
+        text-align: center
+    }
+
+    #card-animal:hover {
+        -moz-box-shadow: 0 2px 12px #ccc;
+        -webkit-box-shadow: 0 0 10px #ccc;
+        box-shadow: 0 2px 12px #ccc;
+        opacity: 0.7%;
+    }
+
+    .text-about-cards {
+        font-family: 'Quicksand', sans-serif;
+        text-align: justify ;
+        line-height: 1.6;
+
+    }
+
+    #cards-animals h2 {
+        text-align: center;
+        margin: 20px 40px;
+        font-family: 'Quicksand', sans-serif;
+    }
+
+    #card-animal img {
+        border-radius: 5px;
+        padding: 2px;
+    }
+
+    .navigation {
+        font-size: 20px;
+    }
+
+    @media only screen and (max-width: 550px) {
+        #cards-animals h2 {
+            margin: auto;
+            font-size: 16px; }
+        .text-about-cards {
+            font-size: 12px;
+            padding: 10px;
+        }
+        .home-cards {
+            margin: auto;
+            align-items: center;
+            font-size: 12px; }
+        .card-title-small h6 {
+            font-size: 14px; }
+        .home-cards .row #card-animal {
+            max-width: 60%;
+            align-items: center;
+             } }
+    
+</style>
+<section id="cards-animals">
+
+    <h2>Mūsų globotiniai</h2>
+
+        <div class="text-about-cards">Norėdami apie gyvūną sužinoti daugiau spustelėkite ant nuotraukos.
+            Taip pat nuo šiol registruoti svetainės vartotojai gali rezervuoti laiką atvykti į "Bobiko"
+            prieglaudėlę susipažinti su patikusiu gyvūnu bei "pamėgti" gyvūną spustelėję širdelės ikoną.
+            Turite klausimų apie gyvūno sveikatos būklę? Neapsiprendžiate ar gyvūnas jums? Nedvejokite ir susisiekite su mumis elektorniniu paštu
+            arba telefonu darbo dienomis nuo 8:00 iki 18:00.
         </div>
-</div>
-    {% endfor %}
-</div>
 
+    <div class="container home-cards">
+{% for animal in animals[3:]  %}
+    {% if loop.index0 is divisible by(3) %}
+        <div class="row">
+    {% endif %}
+    {#<div class="col-sm-12 clo-lg-6 col-lg-3">#}
+            <div class="card card-default" id="card-animal">
+                <h6 class="card-title-small" style="">{{ animal.name }} - {{ animal.age }} m.</h6>
+                    <a href="{{ path('animal_show', {'id': animal.id}) }}">
+                        {% if (animal.species == 'katinas') %}
+                        <img class="img-fluid" src="{{ absolute_url(asset('images/cat.png')) }}" width="380" alt="Cat!" />
+                        {% else %}
+                         <img class="img-fluid" src="{{ absolute_url(asset('images/dog.png')) }}" width="380" alt="Dog!" />
+                        {% endif %}
+                        </a>
+                        <div class="card-body" style="background-color: floralwhite;">
+                    <h6 class="card-subtitle"></h6>
+                <a href="{{ path('message_new') }}"><i class="fa fa-calendar-check fa-2x"></i></a>
+            <span>  Susipažinkite   </span>
+                            <i class="fas fa-heart" style="color:dodgerblue"></i> <span>{{ animal.heartCount }}</span>
+                            <hr>
 
-<div class="navigation text-center">
-    {{ knp_pagination_render(animals) }}
-    {#animals passed from hoemcottroller index#}
-</div>
+        </div>
+        </div>
+    {#</div>#}
+    {% if loop.index is divisible by(3) or loop.last %}
+        </div>
+    {% endif %}
+{% endfor %}
+    </div>
 
-</div>
-
-
+    <div class="navigation text-center">
+        {{ knp_pagination_render(animals) }}
+        {#animals passed from hoemcottroller index#}
+    </div>
+</section>

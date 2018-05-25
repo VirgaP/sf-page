@@ -3,6 +3,13 @@
 {% block title %}Žinutės{% endblock %}
 
 {% block body %}
+    <style>
+        .container-fluid {
+            max-width: 90%;
+            padding: 70px;
+        }
+    </style>
+    <div class="container-fluid">
     <h1>Žinutės</h1>
 
     <table class="table">
@@ -35,4 +42,5 @@
         {% endfor %}
         </tbody>
     </table>
+    </div>
 {% endblock %}

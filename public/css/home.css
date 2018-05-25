@@ -1,0 +1,122 @@
+body {
+    background-color: #F5F0E9;
+}
+
+nav {
+    position: absolute;
+    height: 60px;
+    width: 100%;
+    background-color: #375d5d;
+    opacity: 0.7; }
+nav .bar {
+    display: none;
+    cursor: pointer;
+    color: #fff; }
+nav .bar:hover {
+    color: gray; }
+nav ul {
+    line-height: 60px;
+    margin: 0;
+    margin-right: 20px; }
+nav ul li {
+    display: inline-block;
+    margin: 0 10px; }
+nav ul li a {
+    color: #fff;
+    text-decoration: none; }
+.logo {
+    font-family: 'Luckiest Guy', cursive;
+    letter-spacing: 2px;
+}
+.fl-l {
+    float: left; }
+.fl-r {
+    float: right; }
+
+.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+.sticky + #hero {
+    padding-top: 60px;
+}
+
+
+#cards-animals {
+    max-width: 900px;
+    z-index: -1;
+    align-content: center;
+    margin: 30px auto;
+
+}
+.home-cards {
+    max-width: 95%;
+    height: auto;
+    z-index: -1;
+    align-content: center;
+    margin: auto;
+    padding-top: 20px;
+}
+
+#card-animal {
+    max-width:30%;
+    border: solid 3px lightgrey;
+    margin: 0.5%;
+    border-radius: 5px;
+}
+
+.card-title-small {
+    font-family: 'Pacifico', cursive;
+    font-size: 20px;
+    text-align: center
+}
+
+#card-animal:hover {
+    -moz-box-shadow: 0 2px 12px #ccc;
+    -webkit-box-shadow: 0 0 10px #ccc;
+    box-shadow: 0 2px 12px #ccc;
+    opacity: 0.7%;
+}
+
+.text-about-cards {
+    font-family: 'Quicksand', sans-serif;
+    text-align: justify ;
+    line-height: 1.6;
+
+}
+
+#cards-animals h2 {
+    text-align: center;
+    margin: 20px 40px;
+    font-family: 'Quicksand', sans-serif;
+}
+
+#card-animal img {
+    border-radius: 5px;
+    padding: 2px;
+}
+
+.navigation {
+    font-size: 20px;
+}
+
+@media only screen and (max-width: 550px) {
+    #cards-animals h2 {
+        margin: auto;
+        font-size: 16px; }
+    .text-about-cards {
+        font-size: 12px;
+        padding: 10px;
+    }
+    .home-cards {
+        margin: auto;
+        align-items: center;
+        font-size: 12px; }
+    .card-title-small h6 {
+        font-size: 14px; }
+    .home-cards .row #card-animal {
+        max-width: 60%;
+        align-items: center;
+    } }

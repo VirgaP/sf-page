@@ -1,47 +1,162 @@
 
-<nav class="navbar navbar-expand-sm bg-light navbar-light sticky-top">
-    <!-- Brand -->
-    <a class="navbar-brand" href="{{ path('home') }}">
-        <img src="{{ absolute_url(asset('images/logo.jpeg')) }}" width="50" alt="logo" />
-    </a>
+{#<nav class="navbar navbar-expand-sm bg-light navbar-light sticky-top">#}
+    {#<!-- Brand -->#}
+    {#<a class="navbar-brand" href="{{ path('home') }}">#}
+        {#<img src="{{ absolute_url(asset('images/logo.jpeg')) }}" width="50" alt="logo" />#}
+    {#</a>#}
 
-    <!-- Links -->
-    <ul class="navbar-nav">
-        <li class="nav-item">
-            <a class="nav-link" href="{{ path('about_us') }}">Apie mus</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Link 2</a>
-        </li>
-        {% if is_granted("ROLE_USER") %}
-        <li class="nav-item">
-            <a class="nav-link" href="#">Vartotojo paskyra</a>
-        </li>
-        {% endif %}
-        {% if is_granted("ROLE_ADMIN") %}
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown"><i class="fas fa-lock"></i>
-                    Admin zona
-                </a>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{{ path('user_index') }}">Vartotojai</a>
-                    <a class="dropdown-item" href="{{ path('about_us') }}">Apie mus</a>
-                    <a class="dropdown-item" href="{{ path('messages_index') }}">Zinutes</a>
-                </div>
-            </li>
-        {% endif %}
+    {#<!-- Links -->#}
+    {#<ul class="navbar-nav">#}
+        {#<li class="nav-item">#}
+            {#<a class="nav-link" href="{{ path('about_us') }}">Apie mus</a>#}
+        {#</li>#}
+        {#<li class="nav-item">#}
+            {#<a class="nav-link" href="#">Link 2</a>#}
+        {#</li>#}
+        {#{% if is_granted("ROLE_USER") %}#}
+        {#<li class="nav-item">#}
+            {#<a class="nav-link" href="#">Vartotojo paskyra</a>#}
+        {#</li>#}
+        {#{% endif %}#}
+        {#{% if is_granted("ROLE_ADMIN") %}#}
+            {#<li class="nav-item dropdown">#}
+                {#<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown"><i class="fas fa-lock"></i>#}
+                    {#Admin zona#}
+                {#</a>#}
+                {#<div class="dropdown-menu">#}
+                    {#<a class="dropdown-item" href="{{ path('user_index') }}">Vartotojai</a>#}
+                    {#<a class="dropdown-item" href="{{ path('about_us') }}">Apie mus</a>#}
+                    {#<a class="dropdown-item" href="{{ path('messages_index') }}">Zinutes</a>#}
+                {#</div>#}
+            {#</li>#}
+        {#{% endif %}#}
 
-        <!-- Dropdown -->
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown"><i class="fas fa-user"></i>
-                Prisijungti
-            </a>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="{{ path('login') }}">Prisijungti</a>
-                <a class="dropdown-item" href="{{ path('logout') }}">Atsijungti</a>
-                <a class="dropdown-item" href="{{ path('registration') }}">Registruotis</a>
-            </div>
+        {#<!-- Dropdown -->#}
+        {#<li class="nav-item dropdown">#}
+            {#<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown"><i class="fas fa-user"></i>#}
+                {#Prisijungti#}
+            {#</a>#}
+            {#<div class="dropdown-menu">#}
+                {#<a class="dropdown-item" href="{{ path('login') }}">Prisijungti</a>#}
+                {#<a class="dropdown-item" href="{{ path('logout') }}">Atsijungti</a>#}
+                {#<a class="dropdown-item" href="{{ path('registration') }}">Registruotis</a>#}
+            {#</div>#}
+        {#</li>#}
+    {#</ul>#}
+
+{#</nav>#}
+<style>
+    body {
+        background-color: #F5F0E9;
+    }
+
+    nav {
+        position: absolute;
+        height: 60px;
+        width: 100%;
+        background-color: #375d5d;
+        opacity: 0.7;
+        z-index: 10;
+    }
+    nav .bar {
+        display: none;
+        cursor: pointer;
+        color: #fff; }
+    nav .bar:hover {
+        color: gray; }
+    nav ul {
+        line-height: 60px;
+        margin: 0;
+        margin-right: 20px; }
+    nav ul li {
+        display: inline-block;
+        margin: 0 10px; }
+    nav ul li a {
+        color: #fff;
+        text-decoration: none; }
+    .logo {
+        font-family: 'Luckiest Guy', cursive;
+        letter-spacing: 2px;
+        font-size: 20px;
+    }
+    .fl-l {
+        float: left; }
+    .fl-r {
+        float: right; }
+    .sticky {
+        position: fixed;
+        top: 0;
+        width: 100%;
+    }
+
+    .sticky+#hero{
+        padding-top: 60px;
+    }
+
+    @media only screen and (max-width: 550px) {
+         nav ul.show {
+            display: block;
+            width: 100%;
+            margin: 0;
+            text-align: center;
+            animation: showMeniu 2s; }
+        nav ul.bar {
+            display: block !important; }
+        nav .links {
+            display: none;
+            animation: hideMeniu 2s; }
+        nav ul li {
+            background-color: teal;
+            display: block;
+            margin: 0; }
+        body #hero .hero-text {
+            padding: 15px; }
+        body #about {
+            margin: auto;
+            font-size: 14px; }
+        body #about h1 {
+            font-size: 20px; }
+        body #about .box {
+            margin: auto;
+            align-items: center;
+            font-size: 12px; }
+        body #photos h2 {
+            font-size: 20px; }
+        body #photos .gallery-row .gallery-column {
+            max-width: 50%;
+            flex: 50%; } }
+    @keyframes showMeniu {
+        0% {
+            transform: translateY(-300px); }
+        100% {
+            transform: translateY(0px); } }
+    @keyframes hideMeniu {
+        0% {
+            transform: translateY(0px); }
+        100% {
+            transform: translateY(-300px); } }
+
+</style>
+
+<nav id="navbar">
+    <ul class="fl-l logo">
+        <li><a href="{{ path('home') }}">BOBIKAS</a></li>
+    </ul>
+    <ul class="fl-r bar fa-2x">
+        <li>
+            <i class="fas fa-bars"></i>
         </li>
+    </ul>
+    <ul class="fl-r links">
+        <li><a href="{{ path('about_us') }}">APIE MUS</a></li>
+        <li><a href="#">GYVŪNAI</a></li>
+        {% if is_granted ('ROLE_USER') %}
+        <li><a href="{{ path('member_show', {'id': app.user.id}) }}">VARTOTOJO PASKYRA</a></li>
+        {% endif %}
+        <li><a href="{{ path('login') }}"><i class="far fa-user fa-2x"></i></a></li>
+        {% if is_granted ('IS_AUTHENTICATED_FULLY') %}
+            <li><a href="{{ path('logout') }}"><i class="fas fa-sign-out-alt fa-2x"></i></a></li>
+        {% endif %}
     </ul>
 
 </nav>

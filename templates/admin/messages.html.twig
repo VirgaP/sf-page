@@ -3,6 +3,13 @@
 {% block title %}Žinutės{% endblock %}
 
 {% block body %}
+    <style>
+        .container-fluid {
+            max-width: 90%;
+            padding: 70px;
+        }
+    </style>
+    <div class="container-fluid">
     <h1>Žinutės</h1>
 
     <table class="table">
@@ -39,4 +46,5 @@
 
     <a href="{{ path('messages_seen') }}" class="btn btn-primary active"
        role="button">Žiūrėti skaitytas žinutes</a>
+    </div>
 {% endblock %}

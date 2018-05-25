@@ -1,15 +1,24 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="container" style="width: 60%">
-        <h3>Vartotoju prisijungimas <i class="fas fa-user-alt"></i></h3>
-        <h6>Prašome įvesti el. pašto adresą ir slaptažodį</h6>
+
+    <div class="container" style="width: 50%; padding: 90px">
+        <h2>Vartotojų prisijungimas</h2>
+
     <form action="{{ path('login') }}" method="post">
         {{ form_widget(login_form) }}
 
         {# Note: ensure the submit name does not conflict with the form's name or it may clobber field data #}
         {#<input type="submit" name="login" />#}
-        <button type="submit" name="login">Prisijungti</button>
+        {#<button type="submit" name="login">Prisijungti</button>#}
+        <button class="btn btn-primary" name="login" type="submit" formnovalidate>{{ button_label|default('Prisijungti') }}</button>
+        <p>Neesate registruotas vartotojas? <a href="{{ path('registration') }}">Registruokitės.</a></p>
     </form>
     </div>
+    <i class="fas fa-paw fa-4x" style="color: darkred; position: fixed;
+    bottom: 20px; right: 20px;"></i>
+    </div>
+
+
+
 {% endblock %}

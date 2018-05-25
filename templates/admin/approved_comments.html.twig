@@ -3,6 +3,13 @@
 {% block title %}Patvirtinti komentarai{% endblock %}
 
 {% block body %}
+    <style>
+        .container-fluid {
+            max-width: 90%;
+            padding: 70px;
+        }
+    </style>
+    <div class="container-fluid">
     <h1>Patvirtinti komentarai</h1>
 
     <table class="table">
@@ -40,4 +47,5 @@
 
     <a href="{{ path('comment_index') }}" class="btn btn-primary active"
        role="button">Grįžti į komentarų sąrašą</a>
+    </div>
 {% endblock %}

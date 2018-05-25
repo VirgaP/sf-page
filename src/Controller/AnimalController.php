@@ -4,26 +4,28 @@ namespace App\Controller;
 
 use App\Entity\Animal;
 use App\Entity\Comment;
+use App\Entity\Heart;
+use App\Entity\User;
 use App\Form\AnimalType;
 use App\Form\CommentType;
-use App\Pagination\PaginatedCollection;
 use App\Repository\AnimalRepository;
 use App\Repository\CommentRepository;
-use Pagerfanta\Adapter\AdapterInterface;
-use Pagerfanta\Adapter\ArrayAdapter;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
-use Pagerfanta\Pagerfanta;
+use App\Repository\HeartRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 
 /**
  * @Route("/animal")
  */
+//class AnimalController extends AbstractController
 class AnimalController extends Controller
 {
     /**
@@ -62,30 +64,6 @@ class AnimalController extends Controller
 
 
     /**
-     * @Route("/list", name="animal_list", methods="GET")
-     */
-    public function listAction(Request $request)
-    {
-
-        $em = $this->getDoctrine()->getManager();
-
-        $queryBuilder = $em->getRepository('App:Animal')->createQueryBuilder('a');
-
-        $query = $queryBuilder->getQuery();
-
-        $paginator  = $this->get('knp_paginator');
-
-        $animals = $paginator->paginate(
-            $query, /* query NOT result */
-            $request->query->getInt('page', 2)/*page number*/,
-            $request->query->getInt('limit', 10)/*limit per page*/
-        );
-
-        return $this->render('animal/list.html.twig', [
-            'animals' => $animals,
-        ]);
-    }
-    /**
      * @Route("/new", name="animal_new", methods="GET|POST")
      */
     public function new(Request $request): Response
@@ -101,7 +79,7 @@ class AnimalController extends Controller
                 /** @var UploadedFile $file */
                 $animal = $form->getData();
                 $file = $animal->getPicture();
-                $fileName = md5(uniqid()).'.'.$file->guessExtension();
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
                 $file->move(
                     $this->getParameter('upload_directory'),
                     $fileName
@@ -130,7 +108,7 @@ class AnimalController extends Controller
     /**
      * @Route("/{id}", name="animal_show", methods="GET|POST")
      */
-    public function show(Animal $animal, Request $request, CommentRepository $repository): Response
+    public function show(Animal $animal, Request $request, CommentRepository $repository, $id): Response
     {
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
@@ -147,11 +125,36 @@ class AnimalController extends Controller
             return $this->redirectToRoute('animal_show', ['id' => $animal->getId()]);
         }
 
+        $user = $this->getUser();
+         if ($user) {
+             $user_id = $user->getId();
+         } else {
+             $user_id = 0;
+         }
+
+
         return $this->render('animal/show.html.twig', [
             'animal' => $animal,
             'form' => $form->createView(),
             'comments' => $repository->findAllApprovedByAnimal($animal->getId()),
+            'id' => $id,
+            'user' => $user,
+            'user_id' => $user_id
         ]);
+    }
+    /**
+     * @Route("/{id}/heart", name="animal_toggle_heart", methods={"POST"})
+     */
+    public function toggleAnimalHeart(Animal $animal, Request $request, EntityManagerInterface $em)
+    {
+//        $user_id = $_POST['user_id']; //retrieving userid form ajax call
+//        $animal_id = $_POST['animal_id']; //retrieving animalid from ajax call
+
+        $animal->setHeartCount($animal->getHeartCount() + 1);
+        $em->flush();
+
+
+        return new JsonResponse(['hearts' => $animal->getHeartCount()]);
     }
 
     /**
@@ -168,13 +171,13 @@ class AnimalController extends Controller
             $imageFile = $form->get('picture')->getData();
             if ($imageFile != null) {
                 // Deletes old file if not placeholder
-                if ($currentPicture != 'placeholder.png'){
+                if ($currentPicture != 'placeholder.png') {
                     $filesystem = new Filesystem();
-                    $filesystem->remove($this->getParameter('upload_directory').$currentPicture);
+                    $filesystem->remove($this->getParameter('upload_directory') . $currentPicture);
                 }
 
                 // Adds new file
-                $newFileName = md5(uniqid()).'.'.$imageFile->guessExtension();
+                $newFileName = md5(uniqid()) . '.' . $imageFile->guessExtension();
                 $imageFile->move(
                     $this->getParameter('upload_directory'),
                     $newFileName
@@ -200,12 +203,12 @@ class AnimalController extends Controller
      */
     public function delete(Request $request, Animal $animal): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$animal->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $animal->getId(), $request->request->get('_token'))) {
 
             // Deletes file from server
             $filename = $animal->getPicture();
             $filesystem = new Filesystem();
-            $filesystem->remove($this->getParameter('upload_directory').$filename);
+            $filesystem->remove($this->getParameter('upload_directory') . $filename);
 
             $em = $this->getDoctrine()->getManager();
             $em->remove($animal);
@@ -215,4 +218,5 @@ class AnimalController extends Controller
         $this->addFlash('success', "Gyvūnas ištrintas");
         return $this->redirectToRoute('animal_index');
     }
+
 }

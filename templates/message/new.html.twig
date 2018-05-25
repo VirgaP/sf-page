@@ -3,10 +3,14 @@
 {% block title %}Susisiekti{% endblock %}
 
 {% block body %}
-    <h1>Siųsti žinutę</h1>
+    <div class="container-fluid" style="max-width: 70%; padding: 80px">
+    <h2>Parašykite mums</h2>
 
     {{ form_start(form) }}
         {{ form_widget(form) }}
         <button class="btn btn-primary" formnovalidate>{{ button_label|default('Siųsti') }}</button>
     {{ form_end(form) }}
+    </div>
+    <i class="fas fa-paw fa-4x" style="color: rebeccapurple; position: fixed;
+    bottom: 20px; right: 20px;"></i>
 {% endblock %}
