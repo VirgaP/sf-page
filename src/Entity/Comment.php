@@ -54,7 +54,7 @@ class Comment
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Animal")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Animal", inversedBy="comment")
      * @ORM\JoinColumn(name="animal_id", referencedColumnName="id")
      */
     private $animal;
