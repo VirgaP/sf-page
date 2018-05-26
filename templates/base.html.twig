@@ -7,31 +7,41 @@
             <link rel="stylesheet" href="{{ asset ('css/style.css') }}" />
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-            <link href="https://fonts.googleapis.com/css?family=Pacifico|Roboto" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy|Pacifico|Roboto|Quicksand" rel="stylesheet">
             <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css"
                   integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9"
                   crossorigin="anonymous">
         {% endblock %}
     </head>
+    <style>
+        form {
+            font-family: 'Quicksand', sans-serif;
+        }
+        .alert-success {
+            padding-top: 60px;
+        }
+
+    </style>
     <body>
     {{ include('home/_navbar.html.twig') }}
-    {% if is_granted ('IS_AUTHENTICATED_FULLY') %}
-    <p id="greeting" style="font-size: 10px;">Sveiki, <em>{{ app.user.fullName }}</em>. Šiuo metu esate prisijungę.</p>
-        {% elseif is_granted ('ROLE_SUPER_ADMIN') %}
-        Welcome super admin!
-    {% endif %}
+
         {% for msg in app.session.flashBag.get('success') %}
             <div class="alert alert-success">
                 {{ msg }}
             </div>
+
         {% endfor %}
         {% block body %}
 
         {% endblock %}
+    {#{% block footer %}#}
+        {#{{ include('home/_footer.html.twig') }}#}
+    {#{% endblock %}#}
         {% block javascripts %}
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+            <script src="{{ asset('/public/js/home.js') }}" type="text/javascript"></script>
         {% endblock %}
     </body>
 </html>

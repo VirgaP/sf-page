@@ -17,9 +17,6 @@
     "doctrine/common": {
         "version": "v2.8.1"
     },
-    "doctrine/data-fixtures": {
-        "version": "v1.3.1"
-    },
     "doctrine/dbal": {
         "version": "v2.7.1"
     },
@@ -34,15 +31,6 @@
     },
     "doctrine/doctrine-cache-bundle": {
         "version": "1.3.3"
-    },
-    "doctrine/doctrine-fixtures-bundle": {
-        "version": "3.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "3.0",
-            "ref": "2ea6070ecf365f9a801ccaed4b31d4a3b7af5693"
-        }
     },
     "doctrine/doctrine-migrations-bundle": {
         "version": "1.2",
@@ -83,17 +71,8 @@
     "fig/link-util": {
         "version": "1.0.0"
     },
-    "fzaninotto/faker": {
-        "version": "v1.7.1"
-    },
-    "hautelook/alice-bundle": {
-        "version": "1.4",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "1.4",
-            "ref": "3447d538661064626c782b1122a14defa48dc0b1"
-        }
+    "imagine/imagine": {
+        "version": "v0.7.1"
     },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
@@ -104,20 +83,17 @@
     "knplabs/knp-paginator-bundle": {
         "version": "v2.8.0"
     },
-    "monolog/monolog": {
-        "version": "1.23.0"
-    },
-    "myclabs/deep-copy": {
-        "version": "1.7.0"
-    },
-    "nelmio/alice": {
-        "version": "3.2",
+    "liip/imagine-bundle": {
+        "version": "1.8",
         "recipe": {
             "repo": "github.com/symfony/recipes-contrib",
             "branch": "master",
-            "version": "3.2",
-            "ref": "5ef2976310e8f9621c1a722a73bfbe115c1559a3"
+            "version": "1.8",
+            "ref": "d2a601ea5ccad81de2a131ed68481d012ed4667c"
         }
+    },
+    "monolog/monolog": {
+        "version": "1.23.0"
     },
     "nikic/php-parser": {
         "version": "v4.0.1"
@@ -299,6 +275,9 @@
             "ref": "179470cb6492db92dffee208cfdb436f175c93b4"
         }
     },
+    "symfony/polyfill-ctype": {
+        "version": "v1.8.0"
+    },
     "symfony/polyfill-intl-icu": {
         "version": "v1.8.0"
     },
@@ -359,6 +338,9 @@
             "ref": "3db029c03e452b4a23f7fc45cec7c922c2247eb8"
         }
     },
+    "symfony/templating": {
+        "version": "v4.0.10"
+    },
     "symfony/translation": {
         "version": "3.3",
         "recipe": {
@@ -418,9 +400,6 @@
     },
     "symfony/yaml": {
         "version": "v4.0.9"
-    },
-    "theofidry/alice-data-fixtures": {
-        "version": "v1.0.1"
     },
     "twig/twig": {
         "version": "v2.4.8"

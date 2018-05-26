@@ -1,8 +1,29 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Apie mus{% endblock %}
-
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="/public/css/comments.css">
+{% endblock %}
 {% block body %}
+    <style>
+        #about-us {
+            background-image: url("../images/dogs-banner.jpg");
+            background-size: 100%;
+            background-repeat: no-repeat;
+            height: 320px;
+        }
+        .about-us {
+            margin-top: 50px;
+            margin-bottom: 30px;
+            max-width: 900px;
+            font-family: 'Quicksand', sans-serif;
+            background-color: #fff;
+            line-height: 1.6;
+        }
+    </style>
+    <section id="about-us"></section>
+    <div class="container-fluid about-us">
     <h1>Apie mus</h1>
 
     {% for data in about %}
@@ -14,5 +35,13 @@
     {% if is_granted('ROLE_ADMIN') %}
         <a href="{{ path('about_edit', {'id': '1'}) }}">Koreguoti puslapį</a>
     {% endif %}
+
+    </div>
+    {{ include('home/_footer.html.twig') }}
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="/js/home.js"></script>
 
 {% endblock %}

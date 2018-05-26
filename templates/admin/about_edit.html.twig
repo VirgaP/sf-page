@@ -1,8 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Koreguoti puslapį Apie{% endblock %}
-
+{% block navbar %} {% endblock %}
 {% block body %}
+<style>
+    .container-fluid {
+        max-width: 70%;
+        padding: 70px;
+    }
+</style>
+    <div class="container-fluid">
     <h1>Koreguoti puslapį Apie</h1>
 
     {{ form_start(form) }}
@@ -11,4 +18,5 @@
     {{ form_end(form) }}
 
     <a href="{{ path('home') }}">Grįžti į pagrindinį</a>
+    </div>
 {% endblock %}

@@ -84,6 +84,11 @@ class Animal
     private $comment;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $heartCount = 0;
+
+    /**
      * @ORM\PrePersist()
      * @ORM\PreUpdate()
      */
@@ -263,6 +268,22 @@ class Animal
     public function setComment($comment): void
     {
         $this->comment = $comment;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHeartCount()
+    {
+        return $this->heartCount;
+    }
+
+    /**
+     * @param mixed $heartCount
+     */
+    public function setHeartCount(int $heartCount): void
+    {
+        $this->heartCount = $heartCount;
     }
 
 

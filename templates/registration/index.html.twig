@@ -5,18 +5,30 @@
 {% block body %}
     <style>
         .container-fluid {
-            width: 70%
+            width: 50%;
+            padding: 70px;
         }
         h2 {
             text-align: center;
+            margin-top: 40px;
         }
+
+        .fa-paw {
+            color: forestgreen;
+            position: fixed;
+            bottom: 20px; right: 20px;
+        }
+
+
     </style>
-    <h2>Vartotojų registracija</h2>
     <div class="container-fluid">
+        <h2>Vartotojų registracija</h2>
     {{ form_start(form) }}
     {{ form_widget(form) }}
 
-    <button type="submit">Registruotis</button>
+        <button class="btn btn-primary" name="registration" type="submit" formnovalidate>{{ button_label|default('Registruotis') }}</button>
     {{ form_end(form) }}
+
+    <i class="fas fa-paw fa-4x"></i>
     </div>
 {% endblock %}

@@ -37,10 +37,12 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
     {
         $builder
             ->add('_username', TextType::class, [
-                'label'=>'El.paštas'
+                'label'=>'El.paštas',
+                'required'=> true,
             ])
             ->add('_password', PasswordType::class, [
-                'label' => 'Slaptažodis'
+                'label' => 'Slaptažodis',
+                'required'=> true,
             ])
             ->add('_target_path', HiddenType::class)
         ;

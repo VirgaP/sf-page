@@ -3,26 +3,23 @@
 namespace App\Controller;
 
 use App\Entity\About;
+use App\Entity\Animal;
 use App\Entity\Message;
 use App\Entity\UserMessage;
+use App\Entity\User;
 use App\Form\MessageType;
 use App\Repository\UserMessageRepository;
+use App\Form\ProfileType;
+use App\Repository\AnimalRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Asset\Package;
 
 class DefaultController extends Controller
 {
-    /**
-     * @Route("/", name="home")
-     */
-    public function index()
-    {
-        return $this->render('default/home.html.twig', [
-            'controller_name' => 'DefaultController',
-        ]);
-    }
 
     /**
      * @Route("/susisiekti", name="message_new", methods="GET|POST")
@@ -96,6 +93,38 @@ class DefaultController extends Controller
         }
 
         return $this->redirectToRoute('user_messages_index');
+    }
+
+    /**
+     * @Route("/{id}/anketa/atnaujinti", name="edit_profile_data")
+     */
+    public function editProfile(Request $request, User $user)
+    {
+        // Access denied if tries to edit another user
+        $this->denyAccessUnlessGranted('edit', $user);
+
+        $form = $this->createForm(ProfileType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('edit_profile_data', ['id' => $user->getId()]);
+        }
+
+        return $this->render('user/change.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
+            'id' => $user->getId(),
+        ]);
+    }
+    /**
+     * @Route("/{id}/anketa", name="member_show", methods="GET")
+     */
+    public function showMember(User $user)
+    {
+        $this->denyAccessUnlessGranted('edit', $user);
+        return $this->render('user/show_member.html.twig', ['user' => $user]);
     }
 
 }

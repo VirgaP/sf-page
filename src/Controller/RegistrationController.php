@@ -16,11 +16,11 @@ class RegistrationController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \LogicException
      */
-    public function registerAction(Request $request)
+    public function register(Request $request)
     {
-        $member = new User();
+        $user = new User();
 
-        $form = $this->createMemberRegistrationForm($member);
+        $form = $this->createMemberRegistrationForm($user);
         return $this->render('registration/index.html.twig', [
             'form' => $form->createView(),
         ]);
@@ -35,10 +35,10 @@ class RegistrationController extends Controller
      */
     public function handleFormSubmissionAction(Request $request)
     {
-        $member = new User();
-        $member->setRoles(['ROLE_USER']);//sets role user default
+        $user = new User();
+        $user->setRoles(['ROLE_USER']);//sets role_user default
 
-        $form = $this->createMemberRegistrationForm($member);
+        $form = $this->createMemberRegistrationForm($user);
         $form->handleRequest($request);
         if ( ! $form->isSubmitted() || ! $form->isValid()) {
             return $this->render('registration/index.html.twig', [
@@ -48,32 +48,32 @@ class RegistrationController extends Controller
         $password = $this
             ->get('security.password_encoder')
             ->encodePassword(
-                $member,
-                $member->getPlainPassword()
+                $user,
+                $user->getPlainPassword()
             )
         ;
-        $member->setPassword($password);
+        $user->setPassword($password);
         $em = $this->getDoctrine()->getManager();
-        $em->persist($member);
+        $em->persist($user);
         $em->flush();
         $token = new UsernamePasswordToken(
-            $member,
+            $user,
             $password,
             'main',
-            $member->getRoles()
+            $user->getRoles()
         );
         $this->get('security.token_storage')->setToken($token);
         $this->get('session')->set('_security_main', serialize($token));
-        $this->addFlash('success', 'You are now successfully registered!');
+        $this->addFlash('success', 'Registracija sėkminga!');
         return $this->redirectToRoute('home');
     }
     /**
      * @param $member
      * @return \Symfony\Component\Form\Form
      */
-    private function createMemberRegistrationForm($member)
+    private function createMemberRegistrationForm($user)
     {
-        return $this->createForm(RegistrationType::class, $member, [
+        return $this->createForm(RegistrationType::class, $user, [
             'action' => $this->generateUrl('handle_registration_form_submission')
         ]);
     }

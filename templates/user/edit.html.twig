@@ -3,11 +3,21 @@
 {% block title %}Edit User{% endblock %}
 
 {% block body %}
-    <h1>Edit User</h1>
+    <style>
+        .container-fluid{
+            padding: 70px;
+            max-width: 70%;
+        }
+    </style>
+    <div class="container-fluid">
+    <h1>Redaguoti vartotojo informaciją</h1>
 
-    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('user/_form.html.twig', {'button_label': 'Atnaujinti'}) }}
+        <hr>
 
-    <a href="{{ path('user_index') }}">back to list</a>
+    <a href="{{ path('user_index') }}">Grįžti į sąrašą</a>
+        <hr>
 
-    {{ include('user/_delete_messages_form.html.twig') }}
+    {{ include('user/_delete_form.html.twig') }}
+    </div>
 {% endblock %}

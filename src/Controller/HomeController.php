@@ -2,19 +2,24 @@
 
 namespace App\Controller;
 
+use App\Entity\Animal;
 use App\Repository\AnimalRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use http\Env\Request;
 use http\Env\Response;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class HomeController extends Controller
 {
     /**
-     * @Route("/home", name="home")
+     * @Route("/", name="home")
      */
     public function index(AnimalRepository $animalRepository, \Symfony\Component\HttpFoundation\Request $request)
     {
+
         $em = $this->getDoctrine()->getManager();
 
         $queryBuilder = $em->getRepository('App:Animal')->createQueryBuilder('a');
@@ -30,8 +35,10 @@ class HomeController extends Controller
         );
         return $this->render('home/home.html.twig', [
             'animals' => $animals,
+
         ]);
 
-
     }
+
+
 }

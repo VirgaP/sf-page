@@ -1,22 +1,50 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User{% endblock %}
+{% block title %}Vartotojo informacija{% endblock %}
 
 {% block body %}
-    <h1>User</h1>
+    <style>
+        .container-fluid{
+            padding: 70px;
+            max-width: 90%;
+            border: solid 2px #dedede;
+            font-family: 'Quicksand', sans-serif;
+        }
+    </style>
+    <div class="container-fluid">
+    <h1>Vartotojo informacija</h1>
 
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
+                <th>Reg. Nr.</th>
                 <td>{{ user.id }}</td>
+            </tr>
+            <tr>
+                <th>Vardas</th>
+                <td>{{ user.firstName }}</td>
+            </tr>
+            <tr>
+                <th>Pavardė</th>
+                <td>{{ user.lastName }}</td>
+            </tr>
+            <tr>
+                <th>El.paštas</th>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <th>Sukūrimo laikas</th>
+                <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('user_index') }}">back to list</a>
+    <a href="{{ path('user_index') }}">Grįžti į sąrašą</a>
+        <hr>
 
-    <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
+    <a href="{{ path('user_edit', {'id': user.id}) }}">Redaguoti</a>
+        <br>
 
-    {{ include('user/_delete_messages_form.html.twig') }}
+    {{ include('user/_delete_form.html.twig') }}
+    </div>
 {% endblock %}

@@ -65,6 +65,11 @@ class User implements UserInterface,\Serializable
     private $createdAt;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastLogin;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -169,6 +174,38 @@ class User implements UserInterface,\Serializable
     {
         $this->roles = $roles;
     }
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function updateTimestamps()
+    {
+        $this->lastLogin = new \DateTime('now');
+
+        if ($this->getCreatedAt() === null) {
+            $this->createdAt = new \DateTime('now');
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastLogin()
+    {
+        return $this->lastLogin;
+    }
+
+
+    /**
+     * @param mixed $lastLogin
+     */
+    public function setLastLogin($lastLogin): void
+    {
+        $this->lastLogin = $lastLogin;
+    }
+
+
 
     public function getCreatedAt(): ?\DateTimeInterface
     {

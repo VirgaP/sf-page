@@ -3,9 +3,17 @@
 {% block title %}New User{% endblock %}
 
 {% block body %}
-    <h1>Create new User</h1>
+    <style>
+        .container-fluid{
+            padding: 70px;
+            max-width: 90%;
+        }
+    </style>
+    <div class="container-fluid">
+    <h1>Kurti naują vartotoją</h1>
 
     {{ include('user/_form.html.twig') }}
 
-    <a href="{{ path('user_index') }}">back to list</a>
+    <a href="{{ path('user_index') }}">Grįžti į sąrašą</a>
+    </div>
 {% endblock %}

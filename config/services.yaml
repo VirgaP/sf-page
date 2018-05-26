@@ -25,5 +25,17 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
+#    login_success_handler:
+#        class: App\Security\Authentication\Handler\LoginSuccessHandler
+#        arguments:  ['@router', '@security.authorization_checker']
+#        tags:
+#            - { name: 'monolog.logger', channel: 'security' }
+
+    App\Listeners\LoginListener:
+        tags:
+            - { name: 'kernel.event_listener', event: 'security.interactive_login' }
+
+
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
