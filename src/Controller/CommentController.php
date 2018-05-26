@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
-use App\Form\CommentType;
 use App\Repository\CommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/komentarai")
+ * @Route("/admin/komentarai")
  */
 class CommentController extends Controller
 {
@@ -32,37 +31,9 @@ class CommentController extends Controller
     }
 
     /**
-     * @Route("/{id}", name="comment_show", methods="GET")
-     */
-    public function show(Comment $comment): Response
-    {
-        return $this->render('comment/show.html.twig', ['comment' => $comment]);
-    }
-
-    /**
-     * @Route("/{id}/edit", name="comment_edit", methods="GET|POST")
-     */
-    public function edit(Request $request, Comment $comment): Response
-    {
-        $form = $this->createForm(CommentType::class, $comment);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('comment_edit', ['id' => $comment->getId()]);
-        }
-
-        return $this->render('comment/edit.html.twig', [
-            'comment' => $comment,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
      * @Route("/{id}/patvirtinti", name="comment_approve")
      */
-    public function archive(Comment $comment, CommentRepository $repository)
+    public function approve(Comment $comment, CommentRepository $repository)
     {
         $repository->setAsApproved($comment->getId());
         $this->addFlash('success', "Komentaras patvirtintas");

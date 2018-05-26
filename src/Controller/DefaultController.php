@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Entity\About;
 use App\Entity\Animal;
 use App\Entity\Message;
+use App\Entity\UserMessage;
 use App\Entity\User;
 use App\Form\MessageType;
+use App\Repository\UserMessageRepository;
 use App\Form\ProfileType;
 use App\Repository\AnimalRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -55,6 +57,44 @@ class DefaultController extends Controller
 
         return $this->render('about.html.twig', ['about' => $about]);
     }
+
+    /**
+     * @Route("/zinutes", name="user_messages_index")
+     */
+    public function userMessages(UserMessageRepository $repository)
+    {
+        return $this->render('default/messages.html.twig', [
+            'messages' => $repository->findAllByUser($this->getUser())
+        ]);
+    }
+
+    /**
+     * @Route("/zinutes/{id}", name="user_message_show", methods="GET")
+     */
+    public function show(UserMessage $userMessage): Response
+    {
+        $userMessage->setIsSeen(true);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($userMessage);
+        $em->flush();
+        return $this->render('default/message_show.html.twig', ['userMessage' => $userMessage]);
+    }
+
+    /**
+     * @Route("/zinutes/{id}", name="user_message_delete", methods="DELETE")
+     */
+    public function delete(Request $request, UserMessage $userMessage): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$userMessage->getId(), $request->request->get('_token'))) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($userMessage);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('user_messages_index');
+    }
+
     /**
      * @Route("/{id}/anketa/atnaujinti", name="edit_profile_data")
      */

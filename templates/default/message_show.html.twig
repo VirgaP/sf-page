@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Žinutė{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ userMessage.subject }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ userMessage.createdAt|date('Y-m-d H:i:s') }}</h6>
+                <p class="card-text">{{ userMessage.text }}</p>
+                {{ include('default/_delete_messages_form.html.twig') }}
+                <a href="{{ path('user_messages_index') }}" class="card-link">Grįžti į sąrašą</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

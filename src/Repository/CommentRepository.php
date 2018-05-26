@@ -19,9 +19,6 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
-    /**
-     * @return Comment[] Returns an array of User objects
-     */
     public function findAllApprovedByAnimal($animalId)
     {
         return $this->createQueryBuilder('c')
@@ -69,6 +66,15 @@ class CommentRepository extends ServiceEntityRepository
             ->setParameter('id', $commentId)
             ->getQuery()
             ->execute();
+    }
+
+    public function countAllUnapprovedComments()
+    {
+        return $this->createQueryBuilder('comment')
+            ->andWhere('comment.isApproved = 0')
+            ->select('COUNT(comment) AS commentCount')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
 

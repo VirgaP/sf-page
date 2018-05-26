@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Animal{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdn.jsdelivr.net/npm/gijgo@1.9.6/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="/js/gijgo.min.js" type="text/javascript"></script>
+    <script>
+        $('.datepicker').datepicker({
+            uiLibrary: 'bootstrap4',
+            format: 'yyyy-mm-dd',
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Rezervacija apsilankymui pas gyvūną vardu: {{ animal.name }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Gyvūno aprašymas:</h6>
+                <p class="card-text">{{ animal.description }}</p>
+                <form action="{{ path('reservation_show', {'id': animal.id}) }}">
+                    <input class="datepicker" width="276" name="data" onchange="this.form.submit()" {% if date %} placeholder={{ date }}{% else %} placeholder="Pasirinkite datą" {% endif %}>
+                    <small class="form-text text-muted">Pasirinkite datą, kad matytumėt laisvas valandas rezervacijai.</small>
+                </form>
+                {% if date and hours|length == 0 %}
+                    <p style="color: red">Atsiprašome, šią dieną visos valandos rezervuotos</p>
+                {% endif %}
+
+                {% if hours %}
+                    <h4>Laisvos valandos:</h4>
+                    <small class="form-text text-muted">Norėdami pasirinkti laiką, paspauskite ant jo.</small>
+                    {% for hour in hours %}
+                        <p><a href="{{ path('reservation_add', {'id': animal.id, 'data': date, 'hour': hour}) }}">
+                                <i class="far fa-clock"></i>{{ hour }}:00</a></p>
+                    {% endfor %}
+                {% endif %}
+                <a href="{{ path('animal_index') }}" class="card-link">Grįžti į sąrašą</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
