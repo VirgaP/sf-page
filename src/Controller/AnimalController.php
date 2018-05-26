@@ -4,9 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Animal;
 use App\Entity\Comment;
-use App\Entity\Reservation;
-use App\Entity\User;
 use App\Entity\Heart;
+use App\Entity\User;
+use App\Entity\Reservation;
 use App\Form\AnimalType;
 use App\Form\CommentType;
 use App\Repository\AnimalRepository;
