@@ -2,20 +2,12 @@
 
 {% block title %}Animal{% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="/public/css/comments.css">
-{% endblock %}
-
 {% block body %}
+<div class="container">
     <h1>Animal</h1>
 
     <table class="table">
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ animal.id }}</td>
-            </tr>
             <tr>
                 <th>Description</th>
                 <td>{{ animal.description }}</td>
@@ -46,57 +38,40 @@
             </tr>
         </tbody>
     </table>
+    <a href="{{ path('reservation_show', {'id': animal.id}) }}" class="btn btn-primary btn-sm active"
+       role="button">Rezervuoti apsilankymą</a><br>
 
-    <a href="{{ path('animal_index') }}">back to list</a>
+    <a href="{{ path('animal_index') }}" role="button" class="btn btn-sm btn-primary active">Grįžti į sąrašą</a><br>
 
-    <a href="{{ path('animal_edit', {'id': animal.id}) }}">edit</a>
+    <a href="{{ path('animal_edit', {'id': animal.id}) }}" role="button" class="btn btn-sm btn-warning active">Koreguoti</a>
 
     {{ include('animal/_delete_form.html.twig') }}
 
     {% if comments %}
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8">
-            <h2 class="page-header">Komentarai</h2>
-                {% for comment in comments %}
-                <section class="comment-list">
-                    <!-- Comment -->
-                    <article class="row">
-                        <div class="col-md-12 col-sm-12">
-                            <div class="panel panel-default arrow left">
-                                <div class="panel-body">
-                                    <header class="text-left">
-                                        <div class="comment-user"><i class="fa fa-user"></i> {{ comment.user.firstName }} {{ comment.user.lastName }}</div>
-                                        <time class="comment-date" datetime="16-12-2014 01:05"><i class="fa fa-clock-o"></i> {{ comment.createdAt|date('Y-m-d H:i:s') }}</time>
-                                    </header>
-                                    <div class="comment-post">
-                                        <p>
-                                            {{ comment.comment }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+        <h4>Komentarai</h4>
+        {% for comment in comments %}
+            <!-- Comment -->
+                <div class="card">
+                    <div class="card-body">
+                        <header>
+                            <div class="comment-user"><i class="fa fa-user"></i> {{ comment.user.firstName }} {{ comment.user.lastName }}</div>
+                            <time class="comment-date"><i class="fa fa-clock-o"></i> {{ comment.createdAt|date('Y-m-d H:i:s') }}</time>
+                        </header>
+                        <div class="comment-post">
+                            <p><i class="far fa-comment"></i> {{ comment.comment }}</p>
                         </div>
-                    </article>
-                </section>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
+                    </div>
+                </div>
+        {% endfor %}
     {% endif %}
 
     <div>
-        <dl>
-            <dd>
-                {{ form_start(form) }}
-                    {{ form_widget(form) }}
-                    <button class="btn" formnovalidate>{{ button_label|default('Komentuoti') }}</button>
-                {{ form_end(form) }}
-            </dd>
-        </dl>
-
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button class="btn btn-primary">{{ button_label|default('Komentuoti') }}</button>
+        {{ form_end(form) }}
     </div>
+</div>
 
 
 {% endblock %}

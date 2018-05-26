@@ -12,7 +12,7 @@
                     <option selected value>- Gyvūnas -</option>
                     <option {% if animalFilter == 'šuo' %} selected="selected" {% endif %} value="šuo">Šuo</option>
                     <option {% if animalFilter == 'katė' %} selected="selected" {% endif %} value="katė">Katė</option>
-                    <option {% if animalFilter == 'paukštis' %} selected="selected" {% endif %} value="paukštis">Paukštis</option>
+                    <option {% if animalFilter == 'kita' %} selected="selected" {% endif %} value="kita">Kita</option>
                 </select>
                 <select name="available" onchange="this.form.submit()">
                     <option selected value>- Požymis -</option>
@@ -22,12 +22,13 @@
             </div>
         </form>
     </div>
+
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Description</th>
                 <th>Age</th>
+                <th>Name</th>
                 <th>Species</th>
                 <th>Picture</th>
                 <th>Is Available</th>
@@ -39,10 +40,9 @@
         <tbody>
         {% for animal in animals %}
             <tr>
-                <td>{{ animal.id }}</td>
-                <td>{{ animal.description }}</td>
-                <td>{{ animal.age }}</td>
                 <td>{{ animal.species }}</td>
+                <td>{{ animal.age }}</td>
+                <td>{{ animal.description }}</td>
                 <td>{{ animal.picture }}</td>
                 <td>{{ animal.isAvailable ? 'Yes' : 'No' }}</td>
                 <td>{{ animal.createdAt ? animal.createdAt|date('Y-m-d H:i:s') : '' }}</td>

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Naujos rezervacijos{% endblock %}
+
+{% block body %}
+    <h3>Naujos rezervacijos</h3>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Vartotojas</th>
+            <th>Vartotojo el.paštas</th>
+            <th>Gyvūnas</th>
+            <th>Gyvūno vardas</th>
+            <th>Gyvūno aprašymas</th>
+            <th>Rezervacijos laikas</th>
+            <th>Veiksmai</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for reservation in reservations %}
+            <tr>
+                <td>{{ reservation.user.firstName }} {{ reservation.user.lastName }}</td>
+                <td>{{ reservation.user.email }}</td>
+                <td>{{ reservation.animal.species }}</td>
+                <td>{{ reservation.animal.name }}</td>
+                <td>{{ reservation.animal.description }}</td>
+                <td>{{ reservation.date }} <i class="far fa-clock"></i>{{ reservation.hour }}:00</td>
+                <td>
+                    <a href="{{ path('reservation_approve', {'id': reservation.id}) }}" class="btn btn-success btn-sm">Patvirtinti</a>
+                    {{ include('admin/_reject_reservations_form.html.twig') }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">Naujų rezervacijų nėra</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('approved_reservations') }}" class="btn btn-primary">Žiūrėti patvirtintas rezervacijas</a>
+{% endblock %}

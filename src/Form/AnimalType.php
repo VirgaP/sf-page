@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Animal;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -17,8 +18,16 @@ class AnimalType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('species', TextType::class, [
-                'label' => 'Gyvūnas'
+            ->add('species', ChoiceType::class, [
+                'label' => 'Gyvūnas',
+                'choices' => [
+                    'Šuo' => 'Šuo',
+                    'Katė' => 'Katė',
+                    'Kita' => 'Kita',
+                ]
+            ])
+            ->add('name', TextType::class, [
+                'label' => 'Gyvūno vardas',
             ])
             ->add('age', IntegerType::class, [
                 'label' => 'Amžius',
@@ -32,8 +41,9 @@ class AnimalType extends AbstractType
                 'data_class' => null,
                 'attr' => [
                     'class' => 'filestyle',
-                    'data-input' => 'false',
-                    'data-buttonText' => 'Pasirinkti failą',
+                    'data-text' => 'Pasirinkti failą',
+                    'data-btnClass' => 'btn-primary',
+                    'data-placeholder' => 'Failas nepasirinktas',
                 ]
             ])
             ->add('description', TextareaType::class, [

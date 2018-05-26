@@ -19,9 +19,6 @@ class MessageRepository extends ServiceEntityRepository
         parent::__construct($registry, Message::class);
     }
 
-    /**
-     * @return Message[] Returns an array of User objects
-     */
     public function findAllWhereIsNotSeen()
     {
         return $this->createQueryBuilder('m')
@@ -51,6 +48,15 @@ class MessageRepository extends ServiceEntityRepository
             ->setParameter('id', $messageId)
             ->getQuery()
             ->execute();
+    }
+
+    public function countAllUnseenMessages()
+    {
+        return $this->createQueryBuilder('message')
+            ->andWhere('message.isSeen = 0')
+            ->select('COUNT(message) AS messageCount')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
 
