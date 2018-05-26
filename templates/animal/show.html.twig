@@ -71,33 +71,30 @@
              <span>"Pamėgti" gyvūną</span>
 
              <hr>
-             {% for comment in comments %}
-                 <section class="comment-list">
+             {% if comments %}
+                 <h4>Komentarai</h4>
+                 {% for comment in comments %}
                      <!-- Comment -->
-                     <article class="row">
-                         <div class="col-md-12 col-sm-12">
-                             <div class="panel panel-default arrow left">
-                                 <div class="panel-body">
-                                     <header class="text-left">
-                                         <div class="comment-user"><i class="fa fa-user"></i> {{ comment.user.firstName }} {{ comment.user.lastName }}</div>
-                                         <time class="comment-date" datetime="16-12-2014 01:05"><i class="fa fa-clock-o"></i> {{ comment.createdAt|date('Y-m-d H:i:s') }}</time>
-                                     </header>
-                                     <div class="comment-post">
-                                         <p>
-                                             {{ comment.comment }}
-                                         </p>
-                                     </div>
-                                 </div>
+                     <div class="card">
+                         <div class="card-body">
+                             <header>
+                                 <div class="comment-user"><i class="fa fa-user"></i> {{ comment.user.firstName }} {{ comment.user.lastName }}</div>
+                                 <time class="comment-date"><i class="fa fa-clock-o"></i> {{ comment.createdAt|date('Y-m-d H:i:s') }}</time>
+                             </header>
+                             <div class="comment-post">
+                                 <p><i class="far fa-comment"></i> {{ comment.comment }}</p>
                              </div>
                          </div>
-                     </article>
-                 </section>
-             {% endfor %}
+                     </div>
+                 {% endfor %}
+             {% endif %}
              <hr>
-             {{ form_start(form) }}
-             {{ form_widget(form) }}
-             <button class="btn" formnovalidate>{{ button_label|default('Komentuoti') }}</button>
-             {{ form_end(form) }}
+             <div>
+                 {{ form_start(form) }}
+                 {{ form_widget(form) }}
+                 <button class="btn btn-primary">{{ button_label|default('Komentuoti') }}</button>
+                 {{ form_end(form) }}
+             </div>
              {%  if is_granted ('ROLE_ADMIN') %}
                  <a href="{{ path('animal_edit', {'id': animal.id}) }}">edit</a>
                  {{ include('animal/_delete_form.html.twig') }}
@@ -107,7 +104,9 @@
          </div>
          {{ include('home/_footer.html.twig') }}
     </div>
+</div>
 {% endblock %}
+
 
 {% block javascripts %}
     {% if user_id != 0 %}

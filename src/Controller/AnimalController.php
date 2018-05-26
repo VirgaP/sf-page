@@ -6,10 +6,15 @@ use App\Entity\Animal;
 use App\Entity\Comment;
 use App\Entity\Heart;
 use App\Entity\User;
+use App\Entity\Reservation;
 use App\Form\AnimalType;
 use App\Form\CommentType;
 use App\Repository\AnimalRepository;
 use App\Repository\CommentRepository;
+use App\Repository\ReservationRepository;
+use Pagerfanta\Adapter\AdapterInterface;
+use Pagerfanta\Adapter\ArrayAdapter;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
 use App\Repository\HeartRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -25,7 +30,6 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 /**
  * @Route("/animal")
  */
-//class AnimalController extends AbstractController
 class AnimalController extends Controller
 {
     /**
@@ -33,11 +37,28 @@ class AnimalController extends Controller
      */
     public function index(Request $request): Response
     {
-        $animals = $this->getDoctrine()
-            ->getRepository(Animal::class)
-            ->findAll();
+        $animalsRepository = $this->getDoctrine()
+            ->getManager()
+            ->getRepository(Animal::class);
 
-        return $this->render('animal/index.html.twig', ['animals' => $animals]);
+        $animalFilter = $request->query->get('animal');
+        $availableFilter = $request->query->get('available');
+
+        if ($animalFilter && (!isset($availableFilter) || $availableFilter == "")) {
+            $animals = $animalsRepository->filterAnimal($animalFilter);
+        } else if (!$animalFilter && isset($availableFilter) && ($availableFilter != "")) {
+            $animals = $animalsRepository->filterAvailable($availableFilter);
+        } else if ($animalFilter && isset($availableFilter) && ($availableFilter != "")) {
+            $animals = $animalsRepository->filterBoth($animalFilter, $availableFilter);
+        } else {
+            $animals = $animalsRepository->findAll();
+        }
+
+        return $this->render('animal/index.html.twig', [
+            'animals' => $animals,
+            'animalFilter' => $animalFilter,
+            'availableFilter' => $availableFilter,
+        ]);
     }
 
     /* *
@@ -95,7 +116,7 @@ class AnimalController extends Controller
             $em->persist($animal);
             $em->flush();
 
-            $this->addFlash('success', "Naujas gyvunas sukurtas");
+            $this->addFlash('success', "Naujas gyvūnas sukurtas");
             return $this->redirectToRoute('animal_index');
         }
 
@@ -155,6 +176,56 @@ class AnimalController extends Controller
 
 
         return new JsonResponse(['hearts' => $animal->getHeartCount()]);
+    }
+
+    /**
+     * @Route("/{id}/rezervacija", name="reservation_show", methods="GET|POST")
+     */
+    public function showReservation(Animal $animal, ReservationRepository $repository, Request $request)
+    {
+        $date = $request->query->get('data');
+
+        // Working hours
+        $hours = ['8', '9', '10', '11', '12', '13', '14', '15', '16'];
+        // Empty array to push hours to it
+        $availableHours = [];
+        // If date is entered, get all reservation hours of that day from database
+        if ($date) {
+            $reservations = $repository->findAllByAnimal($animal->getId(), $date);
+
+            // Pushes reserved hours to array, and returns difference between working hours and reserved hours.
+            foreach ($reservations as $key => $value) {
+                foreach ($value as $res) {
+                    array_push($availableHours, $res);
+                }
+            }
+            $availableHours = array_diff($hours, $availableHours);
+        }
+
+        return $this->render('animal/show_reservation.html.twig', [
+            'animal' => $animal,
+            'hours' => $availableHours,
+            'date' => $date,
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/rezervacija/{hour}", name="reservation_add", methods="GET")
+     */
+    public function addReservation(Animal $animal, $hour, Request $request)
+    {
+        $reservation = new Reservation();
+        $reservation->setUser($this->getUser());
+        $reservation->setAnimal($animal);
+        $reservation->setDate($request->query->get('data'));
+        $reservation->setHour($hour);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($reservation);
+        $em->flush();
+
+        $this->addFlash('success', "Rezervacija nusiųsta patvirtinimui. Patvirtinus, informuosime jus žinute.");
+        return $this->redirectToRoute('reservation_show', ['id' => $animal->getId()]);
     }
 
     /**
@@ -218,5 +289,4 @@ class AnimalController extends Controller
         $this->addFlash('success', "Gyvūnas ištrintas");
         return $this->redirectToRoute('animal_index');
     }
-
 }

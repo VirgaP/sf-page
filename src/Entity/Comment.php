@@ -27,7 +27,7 @@ class Comment
     private $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      */
     private $comment;
@@ -40,12 +40,7 @@ class Comment
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isApproved = 0;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isSeen = 0;
+    private $isApproved = false;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
@@ -145,22 +140,6 @@ class Comment
     public function setAnimal($animal): void
     {
         $this->animal = $animal;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getisSeen()
-    {
-        return $this->isSeen;
-    }
-
-    /**
-     * @param mixed $isSeen
-     */
-    public function setIsSeen($isSeen): void
-    {
-        $this->isSeen = $isSeen;
     }
 
 

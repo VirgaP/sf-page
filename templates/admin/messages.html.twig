@@ -10,41 +10,21 @@
         }
     </style>
     <div class="container-fluid">
-    <h1>Žinutės</h1>
+    <h4>Žinutės</h4>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Vardas</th>
-            <th>El.paštas</th>
-            <th>Telefono nr.</th>
-            <th>Žinutė</th>
-            <th>Žinutės laikas</th>
-            <th>Veiksmai</th>
-        </tr>
-        </thead>
-        <tbody>
         {% for message in messages %}
-            <tr>
-                <td>{{ message.name }}</td>
-                <td>{{ message.email }}</td>
-                <td>{{ message.phoneNumber }}</td>
-                <td>{{ message.message }}</td>
-                <td>{{ message.createdAt|date('Y-m-d H:i:s') }}</td>
-                <td>
-                    <a href="{{ path('messages_archive', {'id': message.id}) }}" class="btn btn-warning btn-xs active"
-                       role="button">Perkelti į archyvą</a>
-                </td>
-            </tr>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-user"></i> {{ message.name }} {{ message.email }}</h5>
+                <h6 class="card-subtitle mb-2"><i class="fas fa-phone"></i> {{ message.phoneNumber }}</h6>
+                <h6 class="card-subtitle mb-2 text-muted">{{ message.createdAt|date('Y-m-d H:i:s') }}</h6>
+                <p class="card-text">{{ message.message }}</p>
+                <a href="{{ path('messages_archive', {'id': message.id}) }}" class="card-link">Perkelti į skaitytas</a>
+            </div>
+        </div>
         {% else %}
-            <tr>
-                <td colspan="9">Žinučių nėra</td>
-            </tr>
+            <h6>Naujų žinučių nėra</h6>
         {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('messages_seen') }}" class="btn btn-primary active"
-       role="button">Žiūrėti skaitytas žinutes</a>
+        <a href="{{ path('messages_seen') }}" class="btn btn-primary">Žiūrėti skaitytas žinutes</a>
     </div>
 {% endblock %}

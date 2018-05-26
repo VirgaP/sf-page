@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Žinutės{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <table class="table">
+            <thead class="thead-light">
+            <tr>
+                <th>Žinutė</th>
+                <th>Laikas</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for message in messages %}
+                <tr>
+                    <td>
+                        {% if message.isSeen == 0 %}
+                            <strong><a href="{{ path('user_message_show', {'id': message.id}) }}">{{ message.subject }}</a></strong>
+                        {% else %}
+                            <a href="{{ path('user_message_show', {'id': message.id}) }}">{{ message.subject }}</a>
+                        {% endif %}
+                    </td>
+                    <td>{{ message.createdAt|date('Y-m-d H:i:s') }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="9">Žinučių nėra</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

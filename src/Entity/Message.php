@@ -54,7 +54,7 @@ class Message
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isSeen = 0;
+    private $isSeen = false;
 
     /**
      * @ORM\Column(type="datetime")

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Patvirtintos rezervacijos{% endblock %}
+
+{% block body %}
+    <h1>Patvirtintos rezervacijos</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Vartotojas</th>
+            <th>Vartotojo el.paštas</th>
+            <th>Gyvūnas</th>
+            <th>Gyvūno vardas</th>
+            <th>Gyvūno aprašymas</th>
+            <th>Rezervacijos laikas</th>
+            <th>Veiksmai</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for reservation in reservations %}
+            <tr>
+                <td>{{ reservation.user.firstName }} {{ reservation.user.lastName }}</td>
+                <td>{{ reservation.user.email }}</td>
+                <td>{{ reservation.animal.species }}</td>
+                <td>{{ reservation.animal.name }}</td>
+                <td>{{ reservation.animal.description }}</td>
+                <td>{{ reservation.date }} <i class="far fa-clock"></i>{{ reservation.hour }}:00</td>
+                <td>
+                    {{ include('admin/_delete_reservations_form.html.twig') }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">Patvirtintų rezervacijų nėra</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('reservations_index') }}" class="btn btn-primary active"
+       role="button">Grįžti į rezervacijų sąrašą</a>
+{% endblock %}
