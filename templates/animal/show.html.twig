@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Gyvūnas{% endblock %}
+{% block title %}Animal{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -8,130 +8,95 @@
 {% endblock %}
 
 {% block body %}
-<style>
-    .animal-show {
-        padding: 70px;
-        width: 70%;
-    }
-    body {
-    font-family: 'Quicksand', sans-serif;
-    }
-    .img-fluid {
-        padding: 10px;
-        border-radius: 5px;
-        border: solid grey 2px;
-        margin-left: 20px;
-        max-width: 40%;
-    }
-    .card-title-big {
-    font-weight:bold;
-    padding: 15px 0 0 10px;
-    margin-left: 15px;
-    }
-    #card-animal-big span {
-    margin-left: 20px;
-    }
-    @media only screen and (max-width: 550px) {
-        .animal-show{
-            width: 90%;
-        }
-        .animal-show h3 h2{
-            font-size: 14px;
-        }
-       }
+    <h1>Animal</h1>
 
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ animal.id }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ animal.description }}</td>
+            </tr>
+            <tr>
+                <th>Age</th>
+                <td>{{ animal.age }}</td>
+            </tr>
+            <tr>
+                <th>Species</th>
+                <td>{{ animal.species }}</td>
+            </tr>
+            <tr>
+                <th>Picture</th>
+                <td><img src="/uploads/{{ animal.picture }}"></td>
+            </tr>
+            <tr>
+                <th>IsGiven</th>
+                <td>{{ animal.IsAvailable ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ animal.createdAt ? animal.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ animal.updatedAt ? animal.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
 
-</style>
-<div class="container-fluid animal-show">
-<h3>Gyvūno svetainė</h3>
-     <div class="card card-default" id="card-animal-big">
-                <h2 class="card-title-big">{{ animal.name }}</h2><hr>
-                {#<img src="/uploads/{{ animal.picture }}">#}
-                        {% if (animal.species == 'katinas') %}
+    <a href="{{ path('animal_index') }}">back to list</a>
 
-                            <img class="img-fluid" src="{{ absolute_url(asset('images/cat.png')) }}" alt="Cat!" />
-                            {% else %}
-                                <img class="img-fluid" src="{{ absolute_url(asset('images/cat.png')) }}" alt="Dog!" />
-                                    {% endif %}
+    <a href="{{ path('animal_edit', {'id': animal.id}) }}">edit</a>
 
-         <div class="card-body" style="background-color: whitesmoke;">
-             <h3 class="card-subtitle">Gyvūno istorija</h3><hr>
-             {{ animal.description }}<hr>
-             {{ animal.species|title }}<hr>
-             {{ animal.id }}<hr>
-             <p>Prieglaudoje nuo:<span>{{ animal.createdAt ? animal.createdAt|date('Y-m-d') : '' }}</span></p>
-             <hr>
-             <a href="{{ path('message_new') }}"><i class="fa fa-calendar-check fa-2x"></i></a>
-             <span>Rezervuokite susitikimo laiką</span>
-             <hr>
+    {{ include('animal/_delete_form.html.twig') }}
 
-             <div href="{{ path('animal_toggle_heart', {id: id}) }}" class="fa fa-heart-o fa-2x like-animal js-like-animal ooo">
-             </div>
-             <span class="js-like-animal-count">{{ animal.heartCount }}</span>
-             <span>"Pamėgti" gyvūną</span>
+    {% if comments %}
 
-             <hr>
-             {% for comment in comments %}
-                 <section class="comment-list">
-                     <!-- Comment -->
-                     <article class="row">
-                         <div class="col-md-12 col-sm-12">
-                             <div class="panel panel-default arrow left">
-                                 <div class="panel-body">
-                                     <header class="text-left">
-                                         <div class="comment-user"><i class="fa fa-user"></i> {{ comment.user.firstName }} {{ comment.user.lastName }}</div>
-                                         <time class="comment-date" datetime="16-12-2014 01:05"><i class="fa fa-clock-o"></i> {{ comment.createdAt|date('Y-m-d H:i:s') }}</time>
-                                     </header>
-                                     <div class="comment-post">
-                                         <p>
-                                             {{ comment.comment }}
-                                         </p>
-                                     </div>
-                                 </div>
-                             </div>
-                         </div>
-                     </article>
-                 </section>
-             {% endfor %}
-             <hr>
-             {{ form_start(form) }}
-             {{ form_widget(form) }}
-             <button class="btn" formnovalidate>{{ button_label|default('Komentuoti') }}</button>
-             {{ form_end(form) }}
-             {%  if is_granted ('ROLE_ADMIN') %}
-                 <a href="{{ path('animal_edit', {'id': animal.id}) }}">edit</a>
-                 {{ include('animal/_delete_form.html.twig') }}
-             {% endif %}
-             <a href="{{ path('animal_index') }}">Gyvūnų sąrašas</a>
-
-         </div>
-         {{ include('home/_footer.html.twig') }}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+            <h2 class="page-header">Komentarai</h2>
+                {% for comment in comments %}
+                <section class="comment-list">
+                    <!-- Comment -->
+                    <article class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="panel panel-default arrow left">
+                                <div class="panel-body">
+                                    <header class="text-left">
+                                        <div class="comment-user"><i class="fa fa-user"></i> {{ comment.user.firstName }} {{ comment.user.lastName }}</div>
+                                        <time class="comment-date" datetime="16-12-2014 01:05"><i class="fa fa-clock-o"></i> {{ comment.createdAt|date('Y-m-d H:i:s') }}</time>
+                                    </header>
+                                    <div class="comment-post">
+                                        <p>
+                                            {{ comment.comment }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </section>
+                {% endfor %}
+            </div>
+        </div>
     </div>
-{% endblock %}
-
-{% block javascripts %}
-    {% if user_id != 0 %}
-    {{ parent() }}
-    <script src="/animal_show.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('.ooo').on('click', function(e) {
-                console.log('ok');
-                e.preventDefault();
-                var $link = $(e.currentTarget);
-                var animal_id = {{ animal.id }};
-                var user_id = {{ user_id }};
-                $link.toggleClass('fa-heart-o').toggleClass('fa-heart');
-                $.ajax({
-                    method: 'POST',
-                    url: $link.attr('href'),
-                    data: {animal_id: animal_id, user_id: user_id}
-                }).done(function(data) {
-                    $('.js-like-animal-count').html(data.hearts);
-                })
-            });
-        });
-    </script>
     {% endif %}
-{% endblock %}
 
+    <div>
+        <dl>
+            <dd>
+                {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <button class="btn" formnovalidate>{{ button_label|default('Komentuoti') }}</button>
+                {{ form_end(form) }}
+            </dd>
+        </dl>
+
+    </div>
+
+
+{% endblock %}
