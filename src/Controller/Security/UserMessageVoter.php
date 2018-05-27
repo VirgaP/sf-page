@@ -10,13 +10,14 @@ namespace App\Controller\Security;
 
 
     use App\Entity\User;
+    use App\Entity\UserMessage;
     use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
     use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
     use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class UserVoter extends Voter
+class UserMessageVoter extends Voter
 {
-    const EDIT = 'edit';
+    const SEE = 'see';
 
     private $decisionManager;
 
@@ -27,7 +28,7 @@ class UserVoter extends Voter
 
     protected function supports($attribute, $subject)
     {
-        if (!in_array($attribute, array(self::EDIT))) {
+        if (!in_array($attribute, array(self::SEE))) {
             return false;
         }
 
@@ -52,21 +53,21 @@ class UserVoter extends Voter
             return false;
         }
 
-        /** @var User */
-        $userEntity = $subject;
+        /** @var UserMessage */
+        $userMessageEntity = $subject;
 
         switch ($attribute) {
-            case self::EDIT:
-                return $this->canEdit($userEntity, $user);
+            case self::SEE:
+                return $this->canSee($userMessageEntity, $user);
         }
 
         throw new \LogicException('This code should not be reached!');
     }
 
-    // User can only edit his profile
-    private function canEdit(User $userEntity, User $user)
+    // User can only see his messages
+    private function canSee(User $userMessage, User $user)
     {
-        return $user->getId() === $userEntity->getId();
+        return $user === $userMessage;
     }
 
 }

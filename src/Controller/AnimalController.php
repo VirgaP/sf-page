@@ -4,18 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Animal;
 use App\Entity\Comment;
-use App\Entity\Heart;
-use App\Entity\User;
 use App\Entity\Reservation;
 use App\Form\AnimalType;
 use App\Form\CommentType;
-use App\Repository\AnimalRepository;
 use App\Repository\CommentRepository;
 use App\Repository\ReservationRepository;
-use Pagerfanta\Adapter\AdapterInterface;
-use Pagerfanta\Adapter\ArrayAdapter;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
-use App\Repository\HeartRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Filesystem\Filesystem;
@@ -24,7 +17,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 
 /**

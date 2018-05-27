@@ -27,7 +27,6 @@ class UserType extends AbstractType
             ->add('email', EmailType::class)
             ->add('roles', ChoiceType::class, [
                 'multiple' => true,
-                'expanded' => true, // render check-boxes
                 'choices' => [
                     'Employee' => 'ROLE_ADMIN',
                     'Client' => 'ROLE_USER',

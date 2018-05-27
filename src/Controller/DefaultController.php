@@ -73,6 +73,8 @@ class DefaultController extends Controller
      */
     public function show(UserMessage $userMessage): Response
     {
+        $this->denyAccessUnlessGranted('see', $userMessage->getUser());
+
         $userMessage->setIsSeen(true);
 
         $em = $this->getDoctrine()->getManager();
@@ -86,6 +88,8 @@ class DefaultController extends Controller
      */
     public function delete(Request $request, UserMessage $userMessage): Response
     {
+        $this->denyAccessUnlessGranted('see', $userMessage);
+
         if ($this->isCsrfTokenValid('delete'.$userMessage->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($userMessage);

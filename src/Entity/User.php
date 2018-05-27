@@ -39,7 +39,6 @@ class User implements UserInterface,\Serializable
 
     /**
      * A non-persisted field that's used to create the encoded password.
-     * @Assert\NotBlank()
      * @Assert\Length(max=255)
      * @var string
      */
@@ -57,7 +56,7 @@ class User implements UserInterface,\Serializable
      *
      * @ORM\Column(type="simple_array", nullable=false)
      */
-    private $roles = [];
+    private $roles = ['ROLE_USER'];
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
