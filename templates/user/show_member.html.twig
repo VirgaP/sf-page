@@ -4,16 +4,15 @@
 
 {% block body %}
 <style>
-    .container-fluid{
-        padding: 70px;
-        max-width: 90%;
+    .user-info{
+        padding: 30px 20px 60px 20px;
+        max-width: 80%;
         border: solid 2px #dedede;
         font-family: 'Quicksand', sans-serif;
         background-color: white;
     }
-
 </style>
-<div class="container-fluid">
+<div class="container-fluid user-info">
     <h1>Vartotojo informacija</h1>
 
     <table class="table">
@@ -41,20 +40,26 @@
         </tbody>
     </table>
     <a href="{{ path('edit_profile_data', {'id': app.user.id}) }}">Atnaujinti anketos duomenis</a>
+    <hr>
     <table>
         <thead>
         <tr>
-            <th>Zinutes.</th>
-            <th>Gyvunai</th>
+            <th style="padding: 20px">Gautos žinutės
+                {% for message in messages %}
+                <a href="{{ path('user_message_show', {
+                    'id': message.id
+                }) }}">
+                    {% endfor %}
+                    ({{ unseenMessages }})
+                </a>
+
+            </th>
         </tr>
         </thead>
-        <tbody>
-        <tr>
-            <td>Siustos zinutes</td>
-            <td>Rezervuotas laiaks</td>
-        </tr>
-        </tbody>
     </table>
 </div>
+    <div class="footer">
+        {{ include('home/_footer.html.twig') }}
+    </div>
     {% endblock %}
 

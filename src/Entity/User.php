@@ -57,7 +57,7 @@ class User implements UserInterface,\Serializable
      *
      * @ORM\Column(type="simple_array", nullable=false)
      */
-    private $roles = [];
+    private $roles = ['ROLE_USER'];
 
     /**
      * @ORM\Column(type="datetime", nullable=false)

@@ -29,9 +29,11 @@ class UserMessageRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function countAllUnseenMessages()
+    public function countAllUnseenMessages($userId)
     {
         return $this->createQueryBuilder('message')
+            ->andWhere('message.user = :id')
+            ->setParameter('id', $userId)
             ->andWhere('message.isSeen = 0')
             ->select('COUNT(message) AS messageCount')
             ->getQuery()

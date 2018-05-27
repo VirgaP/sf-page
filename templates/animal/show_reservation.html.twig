@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Animal{% endblock %}
+{% block title %}Rezervacija{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -19,7 +19,19 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container">
+    <style>
+        .container-fluid {
+            padding: 70px;
+            max-width: 70%;
+            font-family: 'Quicksand',sans-serif;
+        }
+        .fa-paw {
+            color: orangered;
+            position: fixed;
+            bottom: 20px; right: 20px;
+        }
+    </style>
+    <div class="container-fluid">
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Rezervacija apsilankymui pas gyvūną vardu: {{ animal.name }}</h5>
@@ -35,7 +47,7 @@
 
                 {% if hours %}
                     <h4>Laisvos valandos:</h4>
-                    <small class="form-text text-muted">Norėdami pasirinkti laiką, paspauskite ant jo.</small>
+                    <small class="form-text text-muted">Norėdami pasirinkti laiką, paspauskite ant valandos laukelio.</small>
                     {% for hour in hours %}
                         <p><a href="{{ path('reservation_add', {'id': animal.id, 'data': date, 'hour': hour}) }}">
                                 <i class="far fa-clock"></i>{{ hour }}:00</a></p>
@@ -43,6 +55,8 @@
                 {% endif %}
                 <a href="{{ path('animal_index') }}" class="card-link">Grįžti į sąrašą</a>
             </div>
+            <i class="fas fa-paw fa-4x"></i>
         </div>
     </div>
+
 {% endblock %}

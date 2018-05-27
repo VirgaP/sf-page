@@ -10,7 +10,7 @@
 {% block body %}
 <style>
     .animal-show {
-        padding: 70px;
+
         width: 70%;
     }
     body {
@@ -23,14 +23,26 @@
         margin-left: 20px;
         max-width: 40%;
     }
-    .card-title-big {
-    font-weight:bold;
-    padding: 15px 0 0 10px;
-    margin-left: 15px;
+    #card-title-big {
+        font-weight:bold;
+        padding-left: 20px;
+    }
+    .fa-heart {
+        color: red;
+    }
+    .fa-heart:hover {
+        cursor: pointer;
+        opacity: 0.7;
+    }
+    #heading {
+        padding-left: 20px;
+        padding-top: 10px;
+        font-weight: bold;
     }
     #card-animal-big span {
     margin-left: 20px;
     }
+
     @media only screen and (max-width: 550px) {
         .animal-show{
             width: 90%;
@@ -43,9 +55,10 @@
 
 </style>
 <div class="container-fluid animal-show">
-<h3>Gyvūno svetainė</h3>
      <div class="card card-default" id="card-animal-big">
-                <h2 class="card-title-big">{{ animal.name }}</h2><hr>
+         <h3 id="heading">Gyvūno anketa</h3>
+         <hr>
+                <h2 id="card-title-big">{{ animal.name }}</h2><hr>
                 {#<img src="/uploads/{{ animal.picture }}">#}
                         {% if (animal.species == 'katinas') %}
 
@@ -61,11 +74,12 @@
              {{ animal.id }}<hr>
              <p>Prieglaudoje nuo:<span>{{ animal.createdAt ? animal.createdAt|date('Y-m-d') : '' }}</span></p>
              <hr>
-             <a href="{{ path('message_new') }}"><i class="fa fa-calendar-check fa-2x"></i></a>
+             <a href="{{ path('reservation_show', {'id': animal.id}) }}"><i class="fa fa-calendar-check fa-2x"></i></a>
              <span>Rezervuokite susitikimo laiką</span>
              <hr>
 
-             <div href="{{ path('animal_toggle_heart', {id: id}) }}" class="fa fa-heart-o fa-2x like-animal js-like-animal ooo">
+
+             <div href="{{ path('animal_toggle_heart', {id: id}) }}" class="fas fa-heart fa-2x like-animal js-like-animal ooo">
              </div>
              <span class="js-like-animal-count">{{ animal.heartCount }}</span>
              <span>"Pamėgti" gyvūną</span>
@@ -100,10 +114,9 @@
                  {{ include('animal/_delete_form.html.twig') }}
              {% endif %}
              <a href="{{ path('animal_index') }}">Gyvūnų sąrašas</a>
-
-         </div>
-         {{ include('home/_footer.html.twig') }}
-    </div>
+</div>
+     </div>
+    {{ include('home/_footer.html.twig') }}
 </div>
 {% endblock %}
 
@@ -115,12 +128,10 @@
     <script>
         $(document).ready(function() {
             $('.ooo').on('click', function(e) {
-                console.log('ok');
                 e.preventDefault();
                 var $link = $(e.currentTarget);
                 var animal_id = {{ animal.id }};
                 var user_id = {{ user_id }};
-                $link.toggleClass('fa-heart-o').toggleClass('fa-heart');
                 $.ajax({
                     method: 'POST',
                     url: $link.attr('href'),
