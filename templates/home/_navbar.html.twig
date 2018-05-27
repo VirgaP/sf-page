@@ -1,50 +1,3 @@
-
-{#<nav class="navbar navbar-expand-sm bg-light navbar-light sticky-top">#}
-    {#<!-- Brand -->#}
-    {#<a class="navbar-brand" href="{{ path('home') }}">#}
-        {#<img src="{{ absolute_url(asset('images/logo.jpeg')) }}" width="50" alt="logo" />#}
-    {#</a>#}
-
-    {#<!-- Links -->#}
-    {#<ul class="navbar-nav">#}
-        {#<li class="nav-item">#}
-            {#<a class="nav-link" href="{{ path('about_us') }}">Apie mus</a>#}
-        {#</li>#}
-        {#<li class="nav-item">#}
-            {#<a class="nav-link" href="#">Link 2</a>#}
-        {#</li>#}
-        {#{% if is_granted("ROLE_USER") %}#}
-        {#<li class="nav-item">#}
-            {#<a class="nav-link" href="#">Vartotojo paskyra</a>#}
-        {#</li>#}
-        {#{% endif %}#}
-        {#{% if is_granted("ROLE_ADMIN") %}#}
-            {#<li class="nav-item dropdown">#}
-                {#<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown"><i class="fas fa-lock"></i>#}
-                    {#Admin zona#}
-                {#</a>#}
-                {#<div class="dropdown-menu">#}
-                    {#<a class="dropdown-item" href="{{ path('user_index') }}">Vartotojai</a>#}
-                    {#<a class="dropdown-item" href="{{ path('about_us') }}">Apie mus</a>#}
-                    {#<a class="dropdown-item" href="{{ path('messages_index') }}">Zinutes</a>#}
-                {#</div>#}
-            {#</li>#}
-        {#{% endif %}#}
-
-        {#<!-- Dropdown -->#}
-        {#<li class="nav-item dropdown">#}
-            {#<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown"><i class="fas fa-user"></i>#}
-                {#Prisijungti#}
-            {#</a>#}
-            {#<div class="dropdown-menu">#}
-                {#<a class="dropdown-item" href="{{ path('login') }}">Prisijungti</a>#}
-                {#<a class="dropdown-item" href="{{ path('logout') }}">Atsijungti</a>#}
-                {#<a class="dropdown-item" href="{{ path('registration') }}">Registruotis</a>#}
-            {#</div>#}
-        {#</li>#}
-    {#</ul>#}
-
-{#</nav>#}
 <style>
     body {
         background-color: #F5F0E9;
@@ -93,11 +46,77 @@
         padding-top: 60px;
     }
 
+
+    li a, .dropbtn {
+        display: inline-block;
+        color: white;
+        text-align: center;
+        padding: 0 10px 0 10px;
+        text-decoration: none;
+    }
+
+    li a:hover, .dropdown:hover .dropbtn {
+        background-color: #9CBA7F;
+    }
+
+    li.dropdown {
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 180px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+    }
+    #main-navbar .icon {
+        display: none;
+    }
+
+    .dropdown-content a:hover {background-color: #f1f1f1}
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    @media screen and (max-width: 550px) {
+        .navbar.responsive {position: relative;}
+        .navbar.responsive a.icon {
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+        .navbar.responsive a {
+            float: none;
+            display: block;
+            text-align: left;
+        }
+        .navbar.responsive .dropdown {float: none;}
+        .navbar.responsive .dropdown-content {position: relative;}
+        .navbar.responsive .dropdown .dropbtn {
+            display: block;
+            width: 100%;
+            text-align: left;
+        }
+    }
+
     @media only screen and (max-width: 550px) {
          nav ul.show {
             display: block;
             width: 100%;
             margin: 0;
+             background-color: teal;
+             padding: 0;
             text-align: center;
             animation: showMeniu 2s; }
         nav ul.bar {
@@ -105,26 +124,11 @@
         nav .links {
             display: none;
             animation: hideMeniu 2s; }
-        nav ul li {
+        nav ul+li {
             background-color: teal;
             display: block;
             margin: 0; }
-        body #hero .hero-text {
-            padding: 15px; }
-        body #about {
-            margin: auto;
-            font-size: 14px; }
-        body #about h1 {
-            font-size: 20px; }
-        body #about .box {
-            margin: auto;
-            align-items: center;
-            font-size: 12px; }
-        body #photos h2 {
-            font-size: 20px; }
-        body #photos .gallery-row .gallery-column {
-            max-width: 50%;
-            flex: 50%; } }
+         }
     @keyframes showMeniu {
         0% {
             transform: translateY(-300px); }
@@ -138,21 +142,41 @@
 
 </style>
 
-<nav id="navbar">
+<nav class="navbar" id="main-navbar">
     <ul class="fl-l logo">
         <li><a href="{{ path('home') }}">BOBIKAS</a></li>
     </ul>
-    <ul class="fl-r bar fa-2x">
+    <ul id="bars" class="fl-r bar fa-2x">
         <li>
             <i class="fas fa-bars"></i>
         </li>
     </ul>
-    <ul class="fl-r links">
+    <ul id="links" class="fl-r links">
         <li><a href="{{ path('about_us') }}">APIE MUS</a></li>
-        <li><a href="#">GYVŪNAI</a></li>
-        {% if is_granted ('ROLE_USER') %}
+        <li><a href="{{ path('animals_list') }}">GYVŪNAI</a></li>
+
+        {% if is_granted('ROLE_USER') %}
+        {% if is_granted('ROLE_ADMIN') %}
+        {% else %}
+
         <li><a href="{{ path('member_show', {'id': app.user.id}) }}">VARTOTOJO PASKYRA</a></li>
         {% endif %}
+        {% endif %}
+
+        {% if is_granted ('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">ADMIN</a>
+                <div class="dropdown-content">
+                    <a href="{{ path('messages_index') }}">Gautos žinutės</a>
+                    <a href="{{ path('reservations_index') }}">Gautos rezervacijos</a>
+                    <a href="{{ path('comment_index') }}">Gauti komentarai</a>
+                    <a href="{{ path('animal_index') }}">Gyvūnų suvestinė</a>
+                    <a href="{{ path('user_index') }}">Vartotojų suvestinė</a>
+                    <a href="{{ path('about_edit', {'id': '1'}) }}">"Apie mus"</a>
+                </div>
+            </li>
+        {% endif %}
+
         <li><a href="{{ path('login') }}"><i class="far fa-user fa-2x"></i></a></li>
         {% if is_granted ('IS_AUTHENTICATED_FULLY') %}
             <li><a href="{{ path('logout') }}"><i class="fas fa-sign-out-alt fa-2x"></i></a></li>
@@ -160,3 +184,19 @@
     </ul>
 
 </nav>
+
+<script>
+    // function myFunction() {
+    //     var x = document.getElementById("main-navbar");
+    //     if (x.className === "navbar") {
+    //         x.className += " responsive";
+    //     } else {
+    //         x.className = "navbar";
+    //         console.log('ok');
+    //     }
+    // }
+document.querySelector("#bars").addEventListener("click", function ()
+{
+ document.querySelector("#links").classList.toggle("show");
+})
+</script>

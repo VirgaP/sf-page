@@ -3,6 +3,14 @@
 {% block title %}Naujos rezervacijos{% endblock %}
 
 {% block body %}
+    <style>
+        .container-fluid {
+            max-width: 90%;
+            padding: 70px;
+        }
+
+    </style>
+    <div class="container-fluid">
     <h3>Naujos rezervacijos</h3>
 
     <table class="table">
@@ -38,6 +46,7 @@
         {% endfor %}
         </tbody>
     </table>
-
+    <hr>
     <a href="{{ path('approved_reservations') }}" class="btn btn-primary">Žiūrėti patvirtintas rezervacijas</a>
+    </div>
 {% endblock %}

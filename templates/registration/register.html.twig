@@ -23,11 +23,13 @@
     </style>
     <div class="container-fluid">
         <h2>Vartotojų registracija</h2>
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
+    {{ form_start(registration_form) }}
+    {{ form_widget(registration_form) }}
 
-        <button class="btn btn-primary" name="registration" type="submit" formnovalidate>{{ button_label|default('Registruotis') }}</button>
-    {{ form_end(form) }}
+        <button class="btn btn-primary">{{ button_label|default('Registruotis') }}</button>
+        {{ form_rest(registration_form) }}
+        {{ form_end(registration_form) }}
+
 
     <i class="fas fa-paw fa-4x"></i>
     </div>

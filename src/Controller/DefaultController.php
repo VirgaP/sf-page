@@ -8,6 +8,7 @@ use App\Entity\Message;
 use App\Entity\UserMessage;
 use App\Entity\User;
 use App\Form\MessageType;
+use App\Repository\ReservationRepository;
 use App\Repository\UserMessageRepository;
 use App\Form\ProfileType;
 use App\Repository\AnimalRepository;
@@ -37,7 +38,7 @@ class DefaultController extends Controller
 
             $this->addFlash('success', "Žinutė išsiųsta");
 
-            return $this->redirectToRoute('message_new');
+            return $this->redirectToRoute('home');
         }
 
         return $this->render('message/new.html.twig', [
@@ -76,11 +77,15 @@ class DefaultController extends Controller
         $this->denyAccessUnlessGranted('see', $userMessage->getUser());
 
         $userMessage->setIsSeen(true);
+        $id = $userMessage->getUser();
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($userMessage);
         $em->flush();
-        return $this->render('default/message_show.html.twig', ['userMessage' => $userMessage]);
+        return $this->render('default/message_show.html.twig', [
+            'userMessage' => $userMessage,
+            'id' => $id,
+        ]);
     }
 
     /**
@@ -125,10 +130,46 @@ class DefaultController extends Controller
     /**
      * @Route("/{id}/anketa", name="member_show", methods="GET")
      */
-    public function showMember(User $user)
+    public function showMember(User $user, Animal $animal, UserMessageRepository $repository)
     {
         $this->denyAccessUnlessGranted('edit', $user);
-        return $this->render('user/show_member.html.twig', ['user' => $user]);
+
+        return $this->render('user/show_member.html.twig', [
+            'user' => $user,
+            'unseenMessages'=>$repository->countAllUnseenMessages($user->getId()),
+            'messages' => $repository->findAllByUser($this->getUser())
+        ]);
+    }
+    /**
+     * @Route("/gyvunai", name="animals_list", methods="GET")
+     */
+    public function listAnimals(AnimalRepository $animalRepository, Request $request)
+    {
+        $animalsRepository = $this->getDoctrine()
+            ->getManager()
+            ->getRepository(Animal::class);
+
+        $animalFilter = $request->query->get('animal');
+        $availableFilter = $request->query->get('available');
+        $ageFilter = $request->query->get('age');
+
+        if ($animalFilter && (!isset($availableFilter) || $availableFilter == "")) {
+            $animals = $animalsRepository->filterAnimal($animalFilter);
+        } else if (!$animalFilter && isset($availableFilter) && ($availableFilter != "")) {
+            $animals = $animalsRepository->filterAvailable($availableFilter);
+        } else if ($animalFilter && isset($availableFilter) && ($availableFilter != "")) {
+            $animals = $animalsRepository->filterBoth($animalFilter, $availableFilter);
+        } else {
+            $animals = $animalsRepository->findAll();
+        }
+
+        return $this->render('animal/list.html.twig', [
+            'animals' => $animals,
+            'animalFilter' => $animalFilter,
+            'availableFilter' => $availableFilter,
+        ]);
+
+
     }
 
 }

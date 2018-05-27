@@ -10,6 +10,7 @@ use App\Form\CommentType;
 use App\Repository\CommentRepository;
 use App\Repository\ReservationRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -26,6 +27,7 @@ class AnimalController extends Controller
 {
     /**
      * @Route("/", name="animal_index", methods="GET")
+     * @Security ("is_granted('ROLE_ADMIN')")
      */
     public function index(Request $request): Response
     {
@@ -53,31 +55,10 @@ class AnimalController extends Controller
         ]);
     }
 
-    /* *
-     * @param $page
-     * @param $key
-     * @param $type
-     * @return Response
-     * @Route ("/list/{type}/{page}/{key}", defaults={"page"=1, "key"="all", "type"="title"})
-     */
-//    public function listAction($page, $key, $type)
-//    {
-//        $em = $this->getDoctrine()->getManager();
-//        $rpp = $this->container->getParameter('animals_per_page');
-//
-//        $repo = $em->getRepository('App:Animal');
-//
-//        list($res, $totalcount) = $repo->getResultAndCount($page, $rpp, $key, $type);
-//
-//        $paginator = new Util\Paginator($page, $totalcount, $rpp);
-//        $pagelist = $paginator->getPagesList();
-//
-//        return $this->render('animal/list.html.twig', array('res' => $res, 'paginator' => $pagelist, 'cur' => $page, 'total' => $paginator->getTotalPages(), 'key'=>$key, 'type'=>$type));
-//    }
-
 
     /**
      * @Route("/new", name="animal_new", methods="GET|POST")
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function new(Request $request): Response
     {
@@ -160,12 +141,9 @@ class AnimalController extends Controller
      */
     public function toggleAnimalHeart(Animal $animal, Request $request, EntityManagerInterface $em)
     {
-//        $user_id = $_POST['user_id']; //retrieving userid form ajax call
-//        $animal_id = $_POST['animal_id']; //retrieving animalid from ajax call
 
         $animal->setHeartCount($animal->getHeartCount() + 1);
         $em->flush();
-
 
         return new JsonResponse(['hearts' => $animal->getHeartCount()]);
     }
@@ -222,6 +200,7 @@ class AnimalController extends Controller
 
     /**
      * @Route("/{id}/edit", name="animal_edit", methods="GET|POST")
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function edit(Request $request, Animal $animal): Response
     {
@@ -263,6 +242,7 @@ class AnimalController extends Controller
 
     /**
      * @Route("/{id}", name="animal_delete", methods="DELETE")
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function delete(Request $request, Animal $animal): Response
     {

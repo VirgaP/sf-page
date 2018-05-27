@@ -3,6 +3,15 @@
 {% block title %}Gyvūnų sąrašas{% endblock %}
 
 {% block body %}
+    <style>
+        .container-fluid {
+            max-width: 90%;
+            padding: 60px;
+            font-family: 'Quicksand', sans-serif;
+            background-color: white;
+        }
+    </style>
+    <div class="container-fluid">
     <h1>Gyvūnų sąrašas</h1>
     <div>
         <form class="navbar-form" action="{{ path('animal_index') }}">
@@ -46,8 +55,8 @@
                 <td>{{ animal.createdAt ? animal.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ animal.updatedAt ? animal.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('animal_show', {'id': animal.id}) }}">show</a>
-                    <a href="{{ path('animal_edit', {'id': animal.id}) }}">edit</a>
+                    <a href="{{ path('animal_show', {'id': animal.id}) }}">Rodyti</a>
+                    <a href="{{ path('animal_edit', {'id': animal.id}) }}">Redaguoti</a>
                 </td>
             </tr>
         {% else %}
@@ -58,8 +67,8 @@
         </tbody>
     </table>
 
+
     <a href="{{ path('animal_new') }}">Kurti naują</a>
-    {#<div class="pagerfanta">#}
-    {#{{ pagerfanta(animals, 'twitter_bootstrap4_translated', {routeName: 'animals_paginated'}) }}#}
-    {#</div>#}
+    </div>
+
 {% endblock %}

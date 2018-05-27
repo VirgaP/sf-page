@@ -3,7 +3,16 @@
 {% block title %}Žinutė{% endblock %}
 
 {% block body %}
-    <div class="container">
+    <style>
+        .container-fluid {
+            max-width: 70%;
+            padding: 70px;
+        }
+        .card-body {
+            background-color: white;
+        }
+    </style>
+    <div class="container-fluid">
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">{{ userMessage.subject }}</h5>
@@ -11,6 +20,8 @@
                 <p class="card-text">{{ userMessage.text }}</p>
                 {{ include('default/_delete_messages_form.html.twig') }}
                 <a href="{{ path('user_messages_index') }}" class="card-link">Grįžti į sąrašą</a>
+                <hr>
+                <a href="{{ path('member_show', {'id': app.user.id}) }}" class="card-link">Grįžti į paskyrą</a>
             </div>
         </div>
     </div>

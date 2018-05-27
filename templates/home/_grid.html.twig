@@ -62,10 +62,6 @@
         #cards-animals h2 {
             margin: auto;
             font-size: 16px; }
-        .text-about-cards {
-            font-size: 12px;
-            padding: 10px;
-        }
         .home-cards {
             margin: auto;
             align-items: center;
@@ -75,7 +71,12 @@
         .home-cards .row #card-animal {
             max-width: 60%;
             align-items: center;
-             } }
+             }
+        .text-about-cards{
+            padding: 20px;
+            font-size: 12px;
+        }
+    }
     
 </style>
 <section id="cards-animals">
@@ -83,9 +84,10 @@
     <h2>Mūsų globotiniai</h2>
 
         <div class="text-about-cards">Norėdami apie gyvūną sužinoti daugiau spustelėkite ant nuotraukos.
-            Taip pat nuo šiol registruoti svetainės vartotojai gali rezervuoti laiką atvykti į "Bobiko"
+            Taip pat nuo šiol <em>registruoti svetainės vartotojai</em> gali rezervuoti laiką atvykti į "Bobiko"
             prieglaudėlę susipažinti su patikusiu gyvūnu bei "pamėgti" gyvūną spustelėję širdelės ikoną.
-            Turite klausimų apie gyvūno sveikatos būklę? Neapsiprendžiate ar gyvūnas jums? Nedvejokite ir susisiekite su mumis elektorniniu paštu
+            Turite klausimų apie gyvūno sveikatos būklę, norite gauti patarimų apie gyvūno priežiūrą?
+            Nedvejokite ir susisiekite su mumis elektorniniu paštu
             arba telefonu darbo dienomis nuo 8:00 iki 18:00.
         </div>
 
@@ -94,22 +96,20 @@
     {% if loop.index0 is divisible by(3) %}
         <div class="row">
     {% endif %}
-    {#<div class="col-sm-12 clo-lg-6 col-lg-3">#}
             <div class="card card-default" id="card-animal">
-                <h6 class="card-title-small" style="">{{ animal.name }} - {{ animal.age }} m.</h6>
+                <h6 class="card-title-small" style="">{{ animal.name }}</h6>
                     <a href="{{ path('animal_show', {'id': animal.id}) }}">
                         <img class="img-fluid" src="/uploads/{{ animal.picture }}" width="380" alt="Cat!" />
                         </a>
                         <div class="card-body" style="background-color: floralwhite;">
                     <h6 class="card-subtitle"></h6>
-                <a href="{{ path('message_new') }}"><i class="fa fa-calendar-check fa-2x"></i></a>
+                <a href="{{ path('reservation_show', {'id': animal.id}) }}"><i class="fa fa-calendar-check fa-2x"></i></a>
             <span>  Susipažinkite   </span>
                             <i class="fas fa-heart" style="color:dodgerblue"></i> <span>{{ animal.heartCount }}</span>
                             <hr>
 
         </div>
         </div>
-    {#</div>#}
     {% if loop.index is divisible by(3) or loop.last %}
         </div>
     {% endif %}

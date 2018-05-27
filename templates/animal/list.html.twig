@@ -1,4 +1,136 @@
 {% extends 'base.html.twig' %}
+{% block body %}
 
+<style>
+    .home-cards {
+        max-width: 95%;
+        height: auto;
+        z-index: -1;
+        align-content: center;
+        margin: auto;
+        padding-top: 30px;
+    }
 
+    #card-animal {
+        max-width:23%;
+        border: solid 3px lightgrey;
+        margin: 0.5%;
+        border-radius: 5px;
+    }
 
+    .card-title-small {
+        font-family: 'Pacifico', cursive;
+        font-size: 25px;
+        text-align: center;
+        padding: 5px;
+    }
+
+    #card-animal:hover {
+        -moz-box-shadow: 0 2px 12px #ccc;
+        -webkit-box-shadow: 0 0 10px #ccc;
+        box-shadow: 0 2px 15px #ccc;
+        opacity: 0.7%;
+    }
+    .img-fluid:hover {
+        opacity: 0.7;
+    }
+
+    #cards-animals h2 {
+        text-align: center;
+        margin: 20px 40px;
+        font-family: 'Quicksand', sans-serif;
+    }
+
+    #card-animal img {
+        border-radius: 5px;
+        padding: 2px;
+    }
+    .card-body {
+        font-family: 'Quicksand', sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    #heading {
+        font-family: 'Quicksand', sans-serif;
+        font-weight: bold;
+        padding: 30px;
+    }
+    .navbar-form{
+        padding-left: 30px;
+        margin-left:20px;
+    }
+    .footer {
+        margin-top: 50px;
+        max-width: 100%;
+    }
+
+    @media only screen and (max-width: 550px) {
+        #cards-animals h2 {
+            margin: auto;
+            font-size: 16px; }
+        .home-cards {
+            margin: auto;
+            align-items: center;
+            font-size: 12px; }
+        .card-title-small h6 {
+            font-size: 14px; }
+        .home-cards .row #card-animal {
+            max-width: 45%;
+            align-items: center;
+        } }
+</style>
+<div class="container-fluid filter">
+    <h1 id="heading">"Bobiko" gyventojai</h1>
+    <div>
+        <form class="navbar-form" action="{{ path('animals_list') }}">
+            <div class="form-group">
+                <select name="animal" onchange="this.form.submit()">
+                    <option selected value>- Gyvūnas -</option>
+                    <option {% if animalFilter == 'šuo' %} selected="selected" {% endif %} value="šuo">Šuo</option>
+                    <option {% if animalFilter == 'katė' %} selected="selected" {% endif %} value="katė">Katė</option>
+                    <option {% if animalFilter == 'kita' %} selected="selected" {% endif %} value="kita">Kita</option>
+                </select>
+                <select name="available" onchange="this.form.submit()">
+                    <option selected value>- Požymis -</option>
+                    <option {% if availableFilter == '0' %} selected="selected" {% endif %} value="0">Neatiduotas</option>
+                    <option {% if availableFilter == '1' %} selected="selected" {% endif %} value="1">Atiduotas</option>
+                </select>
+            </div>
+        </form>
+    </div>
+
+<div class="container home-cards">
+    {% for animal in animals[4:]  %}
+        {% if loop.index0 is divisible by(4) %}
+            <div class="row">
+        {% endif %}
+        {#<div class="col-sm-12 clo-lg-6 col-lg-3">#}
+        <div class="card card-default" id="card-animal">
+            <h6 class="card-title-small" style="">{{ animal.name }}</h6>
+            <a href="{{ path('animal_show', {'id': animal.id}) }}">
+                {% if (animal.species == 'katinas') %}
+                    <img class="img-fluid" src="{{ absolute_url(asset('images/cat.png')) }}" width="380" alt="Cat!" />
+                {% else %}
+                    <img class="img-fluid" src="{{ absolute_url(asset('images/dog.png')) }}" width="380" alt="Dog!" />
+                {% endif %}
+            </a>
+            <div class="card-body" style="background-color: white;">
+                <h6 class="card-subtitle"></h6>
+                <hr>
+                {{ animal.description }}
+                <hr>
+                <span>  Rezervuoti susitikimo laiką  </span>
+                <a href="{{ path('reservation_show', {'id': animal.id}) }}"><i class="fa fa-calendar-check fa-2x"></i></a>
+            </div>
+        </div>
+        {#</div>#}
+        {% if loop.index is divisible by(4) or loop.last %}
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+</div>
+<div class="container-fluid footer">
+    {{ include('home/_footer.html.twig') }}
+    <div>
+    {% endblock %}
