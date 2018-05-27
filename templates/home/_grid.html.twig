@@ -98,11 +98,7 @@
             <div class="card card-default" id="card-animal">
                 <h6 class="card-title-small" style="">{{ animal.name }} - {{ animal.age }} m.</h6>
                     <a href="{{ path('animal_show', {'id': animal.id}) }}">
-                        {% if (animal.species == 'katinas') %}
-                        <img class="img-fluid" src="{{ absolute_url(asset('images/cat.png')) }}" width="380" alt="Cat!" />
-                        {% else %}
-                         <img class="img-fluid" src="{{ absolute_url(asset('images/dog.png')) }}" width="380" alt="Dog!" />
-                        {% endif %}
+                        <img class="img-fluid" src="/uploads/{{ animal.picture }}" width="380" alt="Cat!" />
                         </a>
                         <div class="card-body" style="background-color: floralwhite;">
                     <h6 class="card-subtitle"></h6>
