@@ -98,7 +98,7 @@ class DefaultController extends Controller
      */
     public function delete(Request $request, UserMessage $userMessage): Response
     {
-        $this->denyAccessUnlessGranted('see', $userMessage);
+        $this->denyAccessUnlessGranted('see', $userMessage->getUser());
 
         if ($this->isCsrfTokenValid('delete'.$userMessage->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
