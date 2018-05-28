@@ -7,6 +7,7 @@
         margin: 30px auto;
 
     }
+
     .home-cards {
         max-width: 95%;
         height: auto;
@@ -17,7 +18,7 @@
     }
 
     #card-animal {
-        max-width:30%;
+        max-width: 30%;
         border: solid 3px lightgrey;
         margin: 0.5%;
         border-radius: 5px;
@@ -38,7 +39,7 @@
 
     .text-about-cards {
         font-family: 'Quicksand', sans-serif;
-        text-align: justify ;
+        text-align: justify;
         line-height: 1.6;
 
     }
@@ -58,62 +59,86 @@
         font-size: 20px;
     }
 
+    .imgContainer {
+        position: relative;
+        text-align: center;
+        color: red;
+        font-size: xx-large;
+        font-weight: bolder;
+    }
+
+    .centered {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
     @media only screen and (max-width: 550px) {
         #cards-animals h2 {
             margin: auto;
-            font-size: 16px; }
+            font-size: 16px;
+        }
+
         .home-cards {
             margin: auto;
             align-items: center;
-            font-size: 12px; }
+            font-size: 12px;
+        }
+
         .card-title-small h6 {
-            font-size: 14px; }
+            font-size: 14px;
+        }
+
         .home-cards .row #card-animal {
             max-width: 60%;
             align-items: center;
-             }
-        .text-about-cards{
+        }
+
+        .text-about-cards {
             padding: 20px;
             font-size: 12px;
         }
     }
-    
+
 </style>
 <section id="cards-animals">
 
     <h2>Mūsų globotiniai</h2>
 
-        <div class="text-about-cards">Norėdami apie gyvūną sužinoti daugiau spustelėkite ant nuotraukos.
-            Taip pat nuo šiol <em>registruoti svetainės vartotojai</em> gali rezervuoti laiką atvykti į "Bobiko"
-            prieglaudėlę susipažinti su patikusiu gyvūnu bei "pamėgti" gyvūną spustelėję širdelės ikoną.
-            Turite klausimų apie gyvūno sveikatos būklę, norite gauti patarimų apie gyvūno priežiūrą?
-            Nedvejokite ir susisiekite su mumis elektorniniu paštu
-            arba telefonu darbo dienomis nuo 8:00 iki 18:00.
-        </div>
+    <div class="text-about-cards">Norėdami apie gyvūną sužinoti daugiau spustelėkite ant nuotraukos.
+        Taip pat nuo šiol <em>registruoti svetainės vartotojai</em> gali rezervuoti laiką atvykti į "Bobiko"
+        prieglaudėlę susipažinti su patikusiu gyvūnu bei "pamėgti" gyvūną spustelėję širdelės ikoną.
+        Turite klausimų apie gyvūno sveikatos būklę, norite gauti patarimų apie gyvūno priežiūrą?
+        Nedvejokite ir susisiekite su mumis elektorniniu paštu
+        arba telefonu darbo dienomis nuo 8:00 iki 18:00.
+    </div>
 
     <div class="container home-cards">
-{% for animal in animals[3:]  %}
-    {% if loop.index0 is divisible by(3) %}
-        <div class="row">
-    {% endif %}
+        {% for animal in animals %}
+            {% if loop.index0 is divisible by(3) %}
+                <div class="row">
+            {% endif %}
             <div class="card card-default" id="card-animal">
-                <h6 class="card-title-small" style="">{{ animal.name }}</h6>
+                <h6 class="card-title-small">{{ animal.name }}, {{ animal.age }}m. </h6>
+                <h6 class="card-subtitle text-center"><i class="fas fa-heart" style="color:red"></i> <span>{{ animal.heartCount }}</span></h6>
+                <div class="imgContainer">
                     <a href="{{ path('animal_show', {'id': animal.id}) }}">
-                        <img class="img-fluid" src="/uploads/{{ animal.picture }}" width="380" alt="Cat!" />
-                        </a>
-                        <div class="card-body" style="background-color: floralwhite;">
-                    <h6 class="card-subtitle"></h6>
-                <a href="{{ path('reservation_show', {'id': animal.id}) }}"><i class="fa fa-calendar-check fa-2x"></i></a>
-            <span>  Susipažinkite   </span>
-                            <i class="fas fa-heart" style="color:dodgerblue"></i> <span>{{ animal.heartCount }}</span>
-                            <hr>
+                        <img class="img-fluid" src="/uploads/{{ animal.picture }}" width="380"/>
+                    </a>
+                    {% if animal.isAvailable == 1 %}
+                        <div class="centered">ATIDUOTAS</div>
+                    {% endif %}
+                </div>
+                <div class="card-body" style="background-color: floralwhite;">
 
-        </div>
-        </div>
-    {% if loop.index is divisible by(3) or loop.last %}
-        </div>
-    {% endif %}
-{% endfor %}
+
+                </div>
+            </div>
+            {% if loop.index is divisible by(3) or loop.last %}
+                </div>
+            {% endif %}
+        {% endfor %}
     </div>
 
     <div class="navigation text-center">

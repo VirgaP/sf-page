@@ -11,20 +11,11 @@
 body {
     background-color: #F5F5F5;
 }
-
 </style>
 
-    {#{{ include('home/_navbar.html.twig') }}#}
     {{ include('home/_hero.html.twig') }}
-    {#{{ include('home/_about.html.twig') }}#}
     {{ include('home/_grid.html.twig') }}
     {{ include('home/_footer.html.twig') }}
-
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-<script src="/js/home.js"></script>
 
 {% endblock %}
 

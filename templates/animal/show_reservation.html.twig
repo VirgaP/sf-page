@@ -35,8 +35,6 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Rezervacija apsilankymui pas gyvūną vardu: {{ animal.name }}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Gyvūno aprašymas:</h6>
-                <p class="card-text">{{ animal.description }}</p>
                 <form action="{{ path('reservation_show', {'id': animal.id}) }}">
                     <input class="datepicker" width="276" name="data" onchange="this.form.submit()" {% if date %} placeholder={{ date }}{% else %} placeholder="Pasirinkite datą" {% endif %}>
                     <small class="form-text text-muted">Pasirinkite datą, kad matytumėt laisvas valandas rezervacijai.</small>

@@ -2,7 +2,7 @@ security:
     encoders:
         App\Entity\User:
             algorithm: bcrypt
-        Symfony\Component\Security\Core\User\User: plaintext
+        Symfony\Component\Security\Core\User\User: bcrypt
     providers:
         chain_provider:
             chain:
@@ -11,7 +11,7 @@ security:
             memory:
                 users:
                     super_admin:
-                        password: super
+                        password: $2y$12$Fpol3Z6RDpAzvOFkwzoi8eCWN7zGCP11HQ6oR1n8P96dRBbRCBLn.
                         roles: 'ROLE_SUPER_ADMIN'
         db_users:
              entity:
@@ -52,5 +52,5 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
          - { path: ^/admin, roles: ROLE_ADMIN }
-         - { path: ^/user, roles: ROLE_ADMIN }
+         - { path: ^/vartotojas, roles: ROLE_ADMIN }
 

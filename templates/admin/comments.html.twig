@@ -3,42 +3,50 @@
 {% block title %}Nauji komentarai{% endblock %}
 
 {% block body %}
-    <h1>Nauji komentarai</h1>
+    <style>
+        .container-fluid {
+            max-width: 90%;
+            padding: 60px;
+            border: solid 2px #dedede;
+        }
+    </style>
+    <div class="container-fluid">
+        <h1>Nauji komentarai</h1>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Vartotojas</th>
-            <th>Vartotojo el.paštas</th>
-            <th>Gyvūnas</th>
-            <th>Gyvūno aprašymas</th>
-            <th>Komentaras</th>
-            <th>Komentaro laikas</th>
-            <th>Veiksmai</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for comment in comments if comments %}
+        <table class="table">
+            <thead>
             <tr>
-                <td>{{ comment.user.firstName }} {{ comment.user.lastName }}</td>
-                <td>{{ comment.user.email }}</td>
-                <td>{{ comment.animal.species }}</td>
-                <td>{{ comment.animal.description }}</td>
-                <td>{{ comment.comment }}</td>
-                <td>{{ comment.createdAt|date('Y-m-d H:i:s') }}</td>
-                <td>
-                    <a href="{{ path('comment_approve', {'id': comment.id}) }}" class="btn btn-success btn-xs active"
-                       role="button">Patvirtinti</a>
-                    {{ include('comment/_delete_form.html.twig') }}
-                </td>
+                <th>Vartotojas</th>
+                <th>Vartotojo el.paštas</th>
+                <th>Gyvūnas</th>
+                <th>Gyvūno vardas</th>
+                <th>Komentaras</th>
+                <th>Komentaro laikas</th>
+                <th>Veiksmai</th>
             </tr>
-        {% else %}
-            <tr>
-                <td colspan="9">Naujų komentarų nėra</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for comment in comments if comments %}
+                <tr>
+                    <td>{{ comment.user.firstName }} {{ comment.user.lastName }}</td>
+                    <td>{{ comment.user.email }}</td>
+                    <td>{{ comment.animal.species }}</td>
+                    <td>{{ comment.animal.name }}</td>
+                    <td>{{ comment.comment }}</td>
+                    <td>{{ comment.createdAt|date('Y-m-d H:i:s') }}</td>
+                    <td>
+                        <a href="{{ path('comment_approve', {'id': comment.id}) }}" class="btn btn-success btn-sm">Patvirtinti</a>
+                        {{ include('comment/_delete_form.html.twig') }}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="9">Naujų komentarų nėra</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-    <a href="{{ path('comments_approved') }}" class="btn btn-primary">Žiūrėti patvirtintus komentarus</a>
+        <a href="{{ path('comments_approved') }}" class="btn btn-primary">Žiūrėti patvirtintus komentarus</a>
+    </div>
 {% endblock %}

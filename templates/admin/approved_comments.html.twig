@@ -18,7 +18,7 @@
             <th>Vartotojas</th>
             <th>Vartotojo el.paštas</th>
             <th>Gyvūnas</th>
-            <th>Gyvūno aprašymas</th>
+            <th>Gyvūno vardas</th>
             <th>Komentaras</th>
             <th>Komentaro laikas</th>
             <th>Veiksmai</th>
@@ -30,7 +30,7 @@
                 <td>{{ comment.user.firstName }} {{ comment.user.lastName }}</td>
                 <td>{{ comment.user.email }}</td>
                 <td>{{ comment.animal.species }}</td>
-                <td>{{ comment.animal.description }}</td>
+                <td>{{ comment.animal.name }}</td>
                 <td>{{ comment.comment }}</td>
                 <td>{{ comment.createdAt|date('Y-m-d H:i:s') }}</td>
                 <td>

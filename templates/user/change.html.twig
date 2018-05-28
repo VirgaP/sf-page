@@ -5,22 +5,23 @@
 
 {% block body %}
 
-<div class="container" style="width: 50%; padding: 90px; background-color: white">
-    <h2>Vartotojo duomenų atnaujinimas</h2>
+    <div class="container" style="width: 50%; padding: 90px; background-color: white">
+        <h2>Vartotojo duomenų atnaujinimas</h2>
 
-    {{ form_start(form) }}
-    {{ form_errors(form) }}
-    {{ form_widget(form) }}
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        {{ form_widget(form) }}
 
-    <button class="btn btn-primary" name="user_edit" type="submit" formnovalidate>{{ button_label|default('Atnaujinti') }}</button>
-    <hr>
+        <button class="btn btn-primary" name="user_edit" type="submit"
+                formnovalidate>{{ button_label|default('Atnaujinti') }}</button>
+        <hr>
 
-    <a href="{{ path('member_show', {'id': user.id}) }}">Grižti į anketą</a>
-    {{ form_end(form) }}
+        <a href="{{ path('member_show', {'id': user.id}) }}">Grižti į anketą</a>
+        {{ form_end(form) }}
 
-    <i class="fas fa-paw fa-4x" style="color: yellow; position: fixed;
+        <i class="fas fa-paw fa-4x" style="color: yellow; position: fixed;
     bottom: 20px; right: 20px;"></i>
-</div>
+    </div>
 
 
 {% endblock %}

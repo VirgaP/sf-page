@@ -14,6 +14,7 @@ use App\Entity\Message;
 use App\Entity\Reservation;
 use App\Entity\UserMessage;
 use App\Form\AboutType;
+use App\Repository\CommentRepository;
 use App\Repository\MessageRepository;
 use App\Repository\ReservationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -159,6 +160,15 @@ class AdminController extends Controller
         return $this->render('admin/about_edit.html.twig', [
             'about' => $about,
             'form' => $form->createView(),
+        ]);
+    }
+
+    public function countNewItems(CommentRepository $commentRepository, MessageRepository $messageRepository, ReservationRepository $reservationRepository)
+    {
+        return $this->render('admin/new_items_count.html.twig', [
+            'comments' => $commentRepository->countAllUnapprovedComments(),
+            'messages' => $messageRepository->countAllUnseenMessages(),
+            'reservations' => $reservationRepository->countAllUnapprovedReservations(),
         ]);
     }
 

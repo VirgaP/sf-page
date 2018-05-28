@@ -1,10 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Apie mus{% endblock %}
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="/public/css/comments.css">
-{% endblock %}
+
 {% block body %}
     <style>
         #about-us {
@@ -18,19 +15,17 @@
             margin-bottom: 30px;
             max-width: 900px;
             font-family: 'Quicksand', sans-serif;
-            background-color: #fff;
             line-height: 1.6;
         }
     </style>
     <section id="about-us"></section>
-    <div class="container-fluid about-us">
+    <div class="container-fluid about-us text-center">
     <h1>Apie mus</h1>
 
     {% for data in about %}
-        <h4>Telefonas: {{ data.phoneNumber }}</h4>
-        <h4>Adresas: {{ data.address }}</h4>
         <p>{{ data.text|raw }}</p>
     {% endfor %}
+        <a href="{{ path('message_new') }}"><i class="far fa-envelope fa-2x"></i> Parašykite mums</a>
 
     {% if is_granted('ROLE_ADMIN') %}
         <a href="{{ path('about_edit', {'id': '1'}) }}">Koreguoti puslapį</a>

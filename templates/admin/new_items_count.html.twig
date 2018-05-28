@@ -1,0 +1,15 @@
+<a href="{{ path('messages_index') }}">Žinutės
+    {% if messages > 0 %}
+        <span class="badge badge-pill badge-light">{{ messages }}</span>
+    {% endif %}
+</a>
+<a href="{{ path('reservations_index') }}">Rezervacijos
+    {% if reservations > 0 %}
+        <span class="badge badge-pill badge-light">{{ reservations }}</span>
+    {% endif %}
+</a>
+<a href="{{ path('comment_index') }}">Komentarai
+    {% if comments > 0 %}
+        <span class="badge badge-pill badge-light">{{ comments }}</span>
+    {% endif %}
+</a>

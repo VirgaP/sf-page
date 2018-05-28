@@ -1,0 +1,5 @@
+<li><a href="{{ path('user_messages_index') }}">ŽINUTĖS
+        {% if userMessageCount > 0 %}
+            <span class="badge badge-pill badge-light">{{ userMessageCount }}</span>
+        {% endif %}
+    </a></li>

@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Vartotojų prisijungimas{% endblock %}
+
 {% block body %}
 
     <div class="container" style="width: 50%; padding: 90px">
@@ -7,12 +9,8 @@
 
     <form action="{{ path('login') }}" method="post">
         {{ form_widget(login_form) }}
-
-        {# Note: ensure the submit name does not conflict with the form's name or it may clobber field data #}
-        {#<input type="submit" name="login" />#}
-        {#<button type="submit" name="login">Prisijungti</button>#}
         <button class="btn btn-primary" name="login" type="submit" formnovalidate>{{ button_label|default('Prisijungti') }}</button>
-        <p>Neesate registruotas vartotojas? <a href="{{ path('registration') }}">Registruokitės.</a></p>
+        <p>Esate naujas vartotojas? <a href="{{ path('registration') }}">Registruokitės.</a></p>
     </form>
     </div>
     <i class="fas fa-paw fa-4x" style="color: darkred; position: fixed;

@@ -3,11 +3,21 @@
 {% block title %}Susisiekti{% endblock %}
 
 {% block body %}
+    {% if is_granted ('IS_AUTHENTICATED_FULLY') and not is_granted('ROLE_SUPER_ADMIN') %}
+        {% set name = app.user.fullName %}
+        {% set email = app.user.email %}
+    {% else %}
+        {% set name = "" %}
+        {% set email = "" %}
+    {% endif %}
     <div class="container-fluid" style="max-width: 70%; padding: 80px">
     <h2>Parašykite mums</h2>
 
     {{ form_start(form) }}
-        {{ form_widget(form) }}
+        {{ form_row(form.name, {'attr': {'value': name}}) }}
+        {{ form_row(form.email, {'attr': {'value': email}}) }}
+        {{ form_row(form.phoneNumber) }}
+        {{ form_row(form.message) }}
         <button class="btn btn-primary" formnovalidate>{{ button_label|default('Siųsti') }}</button>
     {{ form_end(form) }}
     </div>

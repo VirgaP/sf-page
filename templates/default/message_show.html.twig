@@ -20,8 +20,6 @@
                 <p class="card-text">{{ userMessage.text }}</p>
                 {{ include('default/_delete_messages_form.html.twig') }}
                 <a href="{{ path('user_messages_index') }}" class="card-link">Grįžti į sąrašą</a>
-                <hr>
-                <a href="{{ path('member_show', {'id': app.user.id}) }}" class="card-link">Grįžti į paskyrą</a>
             </div>
         </div>
     </div>

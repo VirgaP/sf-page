@@ -32,18 +32,6 @@ class About
     private $text;
 
     /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank()
-     */
-    private $phoneNumber;
-
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank()
-     */
-    private $address;
-
-    /**
      * @return mixed
      */
     public function getId()
@@ -65,38 +53,6 @@ class About
     public function setText($text): void
     {
         $this->text = $text;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPhoneNumber()
-    {
-        return $this->phoneNumber;
-    }
-
-    /**
-     * @param mixed $phoneNumber
-     */
-    public function setPhoneNumber($phoneNumber): void
-    {
-        $this->phoneNumber = $phoneNumber;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAddress()
-    {
-        return $this->address;
-    }
-
-    /**
-     * @param mixed $address
-     */
-    public function setAddress($address): void
-    {
-        $this->address = $address;
     }
 
 }

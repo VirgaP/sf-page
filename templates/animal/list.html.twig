@@ -1,4 +1,7 @@
 {% extends 'base.html.twig' %}
+
+{% block title %}Gyvūnų sąrašas{% endblock %}
+
 {% block body %}
 
 <style>
@@ -64,6 +67,21 @@
         max-width: 100%;
     }
 
+    .imgContainer {
+        position: relative;
+        text-align: center;
+        color: red;
+        font-size: xx-large;
+        font-weight: bolder;
+    }
+
+    .centered {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
     @media only screen and (max-width: 550px) {
         #cards-animals h2 {
             margin: auto;
@@ -100,27 +118,28 @@
     </div>
 
 <div class="container home-cards">
-    {% for animal in animals[4:]  %}
+    {% for animal in animals %}
         {% if loop.index0 is divisible by(4) %}
             <div class="row">
         {% endif %}
-        {#<div class="col-sm-12 clo-lg-6 col-lg-3">#}
         <div class="card card-default" id="card-animal">
-            <h6 class="card-title-small" style="">{{ animal.name }}</h6>
+            <h6 class="card-title-small" style="">{{ animal.name }}, {{ animal.age }}m.</h6>
             <a href="{{ path('animal_show', {'id': animal.id}) }}">
-                {% if (animal.species == 'katinas') %}
-                    <img class="img-fluid" src="{{ absolute_url(asset('images/cat.png')) }}" width="380" alt="Cat!" />
-                {% else %}
-                    <img class="img-fluid" src="{{ absolute_url(asset('images/dog.png')) }}" width="380" alt="Dog!" />
-                {% endif %}
+                <div class="imgContainer">
+                    <img class="img-fluid" src="/uploads/{{ animal.picture }}" width="380"/>
+                    {% if animal.isAvailable == 1 %}
+                        <div class="centered">ATIDUOTAS</div>
+                    {% endif %}
+                </div>
             </a>
             <div class="card-body" style="background-color: white;">
                 <h6 class="card-subtitle"></h6>
                 <hr>
                 {{ animal.description }}
-                <hr>
-                <span>  Rezervuoti susitikimo laiką  </span>
-                <a href="{{ path('reservation_show', {'id': animal.id}) }}"><i class="fa fa-calendar-check fa-2x"></i></a>
+                {% if animal.isAvailable == 0 %}
+                    <hr>
+                    <a href="{{ path('reservation_show', {'id': animal.id}) }}"><i class="fa fa-calendar-check fa-2x"></i> Rezervuoti susitikimo laiką</a>
+                {% endif %}
             </div>
         </div>
         {#</div>#}

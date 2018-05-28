@@ -4,17 +4,17 @@
 
 {% block body %}
     <style>
-        .container-fluid{
+        .container-fluid {
             padding: 70px;
             max-width: 90%;
             border: solid 2px #dedede;
         }
     </style>
     <div class="container-fluid">
-    <h1>Vartotojų sąrašas</h1>
+        <h1>Vartotojų sąrašas</h1>
 
-    <table class="table">
-        <thead>
+        <table class="table">
+            <thead>
             <tr>
                 <th>Reg. Nr.</th>
                 <th>Vardas</th>
@@ -23,28 +23,32 @@
                 <th>Sukūrimo laikas</th>
                 <th>Veiksmai</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-            <tr>
-                <td>{{ user.id }}</td>
-                <td>{{ user.firstName }}</td>
-                <td>{{ user.lastName }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('user_show', {'id': user.id}) }}">Rodyti</a>
-                    <a href="{{ path('user_edit', {'id': user.id}) }}">Redaguoti</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="2">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-<hr>
-    <a href="{{ path('user_new') }}">Kurti naują vartotoją</a>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.firstName }}</td>
+                    <td>{{ user.lastName }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>
+                        <a href="{{ path('user_show', {'id': user.id}) }}">Rodyti</a>
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <a href="{{ path('user_edit', {'id': user.id}) }}">Redaguoti</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="2">Vartotojų nėra</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <hr>
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <a href="{{ path('user_new') }}">Kurti naują vartotoją</a>
+        {% endif %}
     </div>
 {% endblock %}

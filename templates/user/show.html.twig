@@ -4,7 +4,7 @@
 
 {% block body %}
     <style>
-        .container-fluid{
+        .container-fluid {
             padding: 70px;
             max-width: 90%;
             border: solid 2px #dedede;
@@ -12,10 +12,10 @@
         }
     </style>
     <div class="container-fluid">
-    <h1>Vartotojo informacija</h1>
+        <h1>Vartotojo informacija</h1>
 
-    <table class="table">
-        <tbody>
+        <table class="table">
+            <tbody>
             <tr>
                 <th>Reg. Nr.</th>
                 <td>{{ user.id }}</td>
@@ -36,15 +36,16 @@
                 <th>Sukūrimo laikas</th>
                 <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
-    <a href="{{ path('user_index') }}">Grįžti į sąrašą</a>
+        <a href="{{ path('user_index') }}">Grįžti į sąrašą</a>
         <hr>
 
-    <a href="{{ path('user_edit', {'id': user.id}) }}">Redaguoti</a>
-        <br>
-
-    {{ include('user/_delete_form.html.twig') }}
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <a href="{{ path('user_edit', {'id': user.id}) }}">Redaguoti</a>
+            <br>
+            {{ include('user/_delete_form.html.twig') }}
+        {% endif %}
     </div>
 {% endblock %}

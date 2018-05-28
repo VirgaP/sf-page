@@ -11,41 +11,56 @@
         opacity: 0.7;
         z-index: 10;
     }
+
     nav .bar {
         display: none;
         cursor: pointer;
-        color: #fff; }
+        color: #fff;
+    }
+
     nav .bar:hover {
-        color: gray; }
+        color: gray;
+    }
+
     nav ul {
         line-height: 60px;
         margin: 0;
-        margin-right: 20px; }
+        margin-right: 20px;
+    }
+
     nav ul li {
         display: inline-block;
-        margin: 0 10px; }
+        margin: 0 10px;
+    }
+
     nav ul li a {
         color: #fff;
-        text-decoration: none; }
+        text-decoration: none;
+    }
+
     .logo {
         font-family: 'Luckiest Guy', cursive;
         letter-spacing: 2px;
         font-size: 20px;
     }
+
     .fl-l {
-        float: left; }
+        float: left;
+    }
+
     .fl-r {
-        float: right; }
+        float: right;
+    }
+
     .sticky {
         position: fixed;
         top: 0;
         width: 100%;
     }
 
-    .sticky+#hero{
+    .sticky + #hero {
         padding-top: 60px;
     }
-
 
     li a, .dropbtn {
         display: inline-block;
@@ -57,6 +72,8 @@
 
     li a:hover, .dropdown:hover .dropbtn {
         background-color: #9CBA7F;
+        text-decoration: none;
+        color: white;
     }
 
     li.dropdown {
@@ -66,43 +83,60 @@
     .dropdown-content {
         display: none;
         position: absolute;
-        background-color: #f9f9f9;
-        min-width: 180px;
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        background-color: #375d5d;
+        min-width: 200px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
         z-index: 1;
     }
 
     .dropdown-content a {
-        color: black;
         padding: 12px 16px;
         text-decoration: none;
         display: block;
         text-align: left;
     }
+
+    #main-navbar {
+        padding: 0;
+    }
+
     #main-navbar .icon {
         display: none;
     }
 
-    .dropdown-content a:hover {background-color: #f1f1f1}
+    .dropdown-content a:hover {
+        background-color: #9CBA7F;
+    }
 
     .dropdown:hover .dropdown-content {
         display: block;
     }
 
     @media screen and (max-width: 550px) {
-        .navbar.responsive {position: relative;}
+        .navbar.responsive {
+            position: relative;
+        }
+
         .navbar.responsive a.icon {
             position: absolute;
             right: 0;
             top: 0;
         }
+
         .navbar.responsive a {
             float: none;
             display: block;
             text-align: left;
         }
-        .navbar.responsive .dropdown {float: none;}
-        .navbar.responsive .dropdown-content {position: relative;}
+
+        .navbar.responsive .dropdown {
+            float: none;
+        }
+
+        .navbar.responsive .dropdown-content {
+            position: relative;
+        }
+
         .navbar.responsive .dropdown .dropbtn {
             display: block;
             width: 100%;
@@ -110,35 +144,53 @@
         }
     }
 
-    @media only screen and (max-width: 550px) {
-         nav ul.show {
+    @media only screen and (max-width: 800px) {
+        nav ul.show {
+            z-index: -1;
             display: block;
             width: 100%;
             margin: 0;
-             background-color: teal;
-             padding: 0;
+            background-color: #375d5d;
+            padding: 0;
             text-align: center;
-            animation: showMeniu 2s; }
+            animation: showMeniu 2s;
+        }
+
         nav ul.bar {
-            display: block !important; }
+            display: block !important;
+        }
+
         nav .links {
             display: none;
-            animation: hideMeniu 2s; }
-        nav ul+li {
-            background-color: teal;
+            animation: hideMeniu 2s;
+        }
+
+        nav ul li {
+            background-color: #375d5d;
             display: block;
-            margin: 0; }
-         }
+            margin: 0;
+            width: 100%;
+
+        }
+    }
+
     @keyframes showMeniu {
         0% {
-            transform: translateY(-300px); }
+            transform: translateY(-300px);
+        }
         100% {
-            transform: translateY(0px); } }
+            transform: translateY(0px);
+        }
+    }
+
     @keyframes hideMeniu {
         0% {
-            transform: translateY(0px); }
+            transform: translateY(0px);
+        }
         100% {
-            transform: translateY(-300px); } }
+            transform: translateY(-300px);
+        }
+    }
 
 </style>
 
@@ -155,21 +207,21 @@
         <li><a href="{{ path('about_us') }}">APIE MUS</a></li>
         <li><a href="{{ path('animals_list') }}">GYVŪNAI</a></li>
 
-        {% if is_granted('ROLE_USER') %}
-        {% if is_granted('ROLE_ADMIN') %}
-        {% else %}
 
-        <li><a href="{{ path('member_show', {'id': app.user.id}) }}">VARTOTOJO PASKYRA</a></li>
-        {% endif %}
+        {% if is_granted('ROLE_USER') %}
+            {% if is_granted('ROLE_ADMIN') %}
+
+            {% else %}
+                {{ render(controller('App\\Controller\\DefaultController::countMessages')) }}
+                <li><a href="{{ path('member_show', {'id': app.user.id}) }}"><i class="fas fa-user-circle fa-2x"></i></a></li>
+            {% endif %}
         {% endif %}
 
         {% if is_granted ('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
             <li class="dropdown">
                 <a href="javascript:void(0)" class="dropbtn">ADMIN</a>
                 <div class="dropdown-content">
-                    <a href="{{ path('messages_index') }}">Gautos žinutės</a>
-                    <a href="{{ path('reservations_index') }}">Gautos rezervacijos</a>
-                    <a href="{{ path('comment_index') }}">Gauti komentarai</a>
+                    {{ render(controller('App\\Controller\\AdminController::countNewItems')) }}
                     <a href="{{ path('animal_index') }}">Gyvūnų suvestinė</a>
                     <a href="{{ path('user_index') }}">Vartotojų suvestinė</a>
                     <a href="{{ path('about_edit', {'id': '1'}) }}">"Apie mus"</a>
@@ -177,26 +229,19 @@
             </li>
         {% endif %}
 
-        <li><a href="{{ path('login') }}"><i class="far fa-user fa-2x"></i></a></li>
+
+
         {% if is_granted ('IS_AUTHENTICATED_FULLY') %}
             <li><a href="{{ path('logout') }}"><i class="fas fa-sign-out-alt fa-2x"></i></a></li>
+        {% else %}
+            <li><a href="{{ path('login') }}"><i class="far fa-user fa-2x"></i></a></li>
         {% endif %}
     </ul>
 
 </nav>
 
 <script>
-    // function myFunction() {
-    //     var x = document.getElementById("main-navbar");
-    //     if (x.className === "navbar") {
-    //         x.className += " responsive";
-    //     } else {
-    //         x.className = "navbar";
-    //         console.log('ok');
-    //     }
-    // }
-document.querySelector("#bars").addEventListener("click", function ()
-{
- document.querySelector("#links").classList.toggle("show");
-})
+    document.querySelector("#bars").addEventListener("click", function () {
+        document.querySelector("#links").classList.toggle("show");
+    })
 </script>

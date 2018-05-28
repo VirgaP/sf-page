@@ -21,12 +21,6 @@ class AboutType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('phoneNumber', TextType::class, [
-                'label' => 'Telefono nr.',
-            ])
-            ->add('address', TextType::class, [
-                'label' => 'Adresas',
-            ])
             ->add('text', TextareaType::class, [
                 'label' => 'Tekstas',
             ])

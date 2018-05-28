@@ -8,16 +8,13 @@ use App\Entity\Message;
 use App\Entity\UserMessage;
 use App\Entity\User;
 use App\Form\MessageType;
-use App\Repository\ReservationRepository;
 use App\Repository\UserMessageRepository;
 use App\Form\ProfileType;
-use App\Repository\AnimalRepository;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Asset\Package;
 
 class DefaultController extends Controller
 {
@@ -61,6 +58,7 @@ class DefaultController extends Controller
 
     /**
      * @Route("/zinutes", name="user_messages_index")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function userMessages(UserMessageRepository $repository)
     {
@@ -85,6 +83,13 @@ class DefaultController extends Controller
         return $this->render('default/message_show.html.twig', [
             'userMessage' => $userMessage,
             'id' => $id,
+        ]);
+    }
+
+    public function countMessages(UserMessageRepository $repository)
+    {
+        return $this->render('default/user_message_count.html.twig', [
+            'userMessageCount' => $repository->countAllUnseenMessages($this->getUser()->getId())
         ]);
     }
 
@@ -117,6 +122,7 @@ class DefaultController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('success', "Duomenys atnaujinti");
 
             return $this->redirectToRoute('edit_profile_data', ['id' => $user->getId()]);
         }
@@ -130,20 +136,18 @@ class DefaultController extends Controller
     /**
      * @Route("/{id}/anketa", name="member_show", methods="GET")
      */
-    public function showMember(User $user, Animal $animal, UserMessageRepository $repository)
+    public function showMember(User $user)
     {
         $this->denyAccessUnlessGranted('edit', $user);
 
         return $this->render('user/show_member.html.twig', [
             'user' => $user,
-            'unseenMessages'=>$repository->countAllUnseenMessages($user->getId()),
-            'messages' => $repository->findAllByUser($this->getUser())
         ]);
     }
     /**
      * @Route("/gyvunai", name="animals_list", methods="GET")
      */
-    public function listAnimals(AnimalRepository $animalRepository, Request $request)
+    public function listAnimals(Request $request)
     {
         $animalsRepository = $this->getDoctrine()
             ->getManager()
@@ -151,7 +155,6 @@ class DefaultController extends Controller
 
         $animalFilter = $request->query->get('animal');
         $availableFilter = $request->query->get('available');
-        $ageFilter = $request->query->get('age');
 
         if ($animalFilter && (!isset($availableFilter) || $availableFilter == "")) {
             $animals = $animalsRepository->filterAnimal($animalFilter);

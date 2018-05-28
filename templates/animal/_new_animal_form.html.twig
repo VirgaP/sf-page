@@ -1,0 +1,9 @@
+{{ form_start(form) }}
+    {{ form_row(form.species) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.age) }}
+    {{ form_row(form.picture) }}
+    {{ form_row(form.description) }}
+    {% do form.isAvailable.setRendered() %}
+    <button class="btn btn-sm btn-primary" formnovalidate>{{ button_label|default('Išsaugoti') }}</button>
+{{ form_end(form) }}

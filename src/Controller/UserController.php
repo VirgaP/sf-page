@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
- * @Route("/user")
+ * @Route("/vartotojas")
  */
 class UserController extends Controller
 {
@@ -25,7 +26,8 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/new", name="user_new", methods="GET|POST")
+     * @Route("/naujas", name="user_new", methods="GET|POST")
+     * @Security("is_granted('ROLE_SUPER_ADMIN')")
      */
     public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
@@ -58,7 +60,8 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/{id}/edit", name="user_edit", methods="GET|POST")
+     * @Route("/{id}/koreguoti", name="user_edit", methods="GET|POST")
+     * @Security("is_granted('ROLE_SUPER_ADMIN')")
      */
     public function edit(Request $request, User $user): Response
     {
@@ -79,6 +82,7 @@ class UserController extends Controller
 
     /**
      * @Route("/{id}", name="user_delete", methods="DELETE")
+     * @Security("is_granted('ROLE_SUPER_ADMIN')")
      */
     public function delete(Request $request, User $user): Response
     {

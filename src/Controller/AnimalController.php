@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 
 /**
- * @Route("/animal")
+ * @Route("/gyvunas")
  */
 class AnimalController extends Controller
 {
@@ -57,7 +57,7 @@ class AnimalController extends Controller
 
 
     /**
-     * @Route("/new", name="animal_new", methods="GET|POST")
+     * @Route("/naujas", name="animal_new", methods="GET|POST")
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function new(Request $request): Response
@@ -120,12 +120,11 @@ class AnimalController extends Controller
         }
 
         $user = $this->getUser();
-         if ($user) {
-             $user_id = $user->getId();
-         } else {
-             $user_id = 0;
-         }
-
+        if ($user) {
+            $user_id = $user->getId();
+        } else {
+            $user_id = 0;
+        }
 
         return $this->render('animal/show.html.twig', [
             'animal' => $animal,
@@ -136,12 +135,12 @@ class AnimalController extends Controller
             'user_id' => $user_id
         ]);
     }
+
     /**
      * @Route("/{id}/heart", name="animal_toggle_heart", methods={"POST"})
      */
     public function toggleAnimalHeart(Animal $animal, Request $request, EntityManagerInterface $em)
     {
-
         $animal->setHeartCount($animal->getHeartCount() + 1);
         $em->flush();
 
@@ -150,6 +149,7 @@ class AnimalController extends Controller
 
     /**
      * @Route("/{id}/rezervacija", name="reservation_show", methods="GET|POST")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function showReservation(Animal $animal, ReservationRepository $repository, Request $request)
     {
@@ -181,6 +181,7 @@ class AnimalController extends Controller
 
     /**
      * @Route("/{id}/rezervacija/{hour}", name="reservation_add", methods="GET")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function addReservation(Animal $animal, $hour, Request $request)
     {
@@ -199,7 +200,7 @@ class AnimalController extends Controller
     }
 
     /**
-     * @Route("/{id}/edit", name="animal_edit", methods="GET|POST")
+     * @Route("/{id}/koreguoti", name="animal_edit", methods="GET|POST")
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function edit(Request $request, Animal $animal): Response

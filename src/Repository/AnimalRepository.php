@@ -26,56 +26,33 @@ class AnimalRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Animal::class);
     }
-//    public function findBy($animal)
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.isAvailable = :isAvailable')
-//            ->setParameter('isAvailable', true)
-//            ->orderBy('a.name', 'DESC')
-//            ->getQuery()
-//            ->execute();
-//    }
 
-    /**
-     * @param int $page
-     * @param int $perPage
-     * @param $animal
-     * @return Pagerfanta
-     */
-//    public function findAnimals($page = 1, $animal, $perPage = Animal::ANIMAL_PER_PAGE){
-//        $paginator = new Pagerfanta(new DoctrineORMAdapter($this->findAll()));
-//        $paginator->setMaxPerPage($perPage);
-//        $paginator->setCurrentPage($page);
-//
-//        return $paginator;
-//    }
-
-//    /**
-//     * @return Animal[] Returns an array of User objects
-//     */
-    /*
-    public function findByExampleField($value)
+    public function filterBoth($animal, $available)
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('animal')
+            ->andWhere('animal.species = :type')
+            ->andWhere('animal.isAvailable = :available')
+            ->setParameters(['type' => $animal, 'available' => $available])
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?User
+    public function filterAnimal($animal)
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
+        return $this->createQueryBuilder('animal')
+            ->andWhere('animal.species = :type')
+            ->setParameter('type', $animal)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getResult();
     }
-    */
+
+    public function filterAvailable($available)
+    {
+        return $this->createQueryBuilder('animal')
+            ->andWhere('animal.isAvailable = :available')
+            ->setParameter('available', $available)
+            ->getQuery()
+            ->getResult();
+    }
+
 }
