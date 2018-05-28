@@ -18,7 +18,7 @@
             border-radius: 5px;
             border: solid grey 2px;
             margin-left: 20px;
-            max-width: 70%;
+            max-width: 50%;
         }
 
         #card-title-big {
@@ -145,7 +145,6 @@
 
 
 {% block javascripts %}
-    {% if user_id != 0 %}
         {{ parent() }}
         <script>
             $(document).ready(function () {
@@ -153,17 +152,15 @@
                     e.preventDefault();
                     var $link = $(e.currentTarget);
                     var animal_id = {{ animal.id }};
-                    var user_id = {{ user_id }};
                     $.ajax({
                         method: 'POST',
                         url: $link.attr('href'),
-                        data: {animal_id: animal_id, user_id: user_id}
+                        data: {animal_id: animal_id}
                     }).done(function (data) {
                         $('.js-like-animal-count').html(data.hearts);
                     })
                 });
             });
         </script>
-    {% endif %}
 {% endblock %}
 

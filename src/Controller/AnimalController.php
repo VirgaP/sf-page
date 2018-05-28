@@ -119,20 +119,11 @@ class AnimalController extends Controller
             return $this->redirectToRoute('animal_show', ['id' => $animal->getId()]);
         }
 
-        $user = $this->getUser();
-        if ($user) {
-            $user_id = $user->getId();
-        } else {
-            $user_id = 0;
-        }
-
         return $this->render('animal/show.html.twig', [
             'animal' => $animal,
             'form' => $form->createView(),
             'comments' => $repository->findAllApprovedByAnimal($animal->getId()),
             'id' => $id,
-            'user' => $user,
-            'user_id' => $user_id
         ]);
     }
 

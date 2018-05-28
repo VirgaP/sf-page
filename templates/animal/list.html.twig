@@ -124,6 +124,7 @@
         {% endif %}
         <div class="card card-default" id="card-animal">
             <h6 class="card-title-small" style="">{{ animal.name }}, {{ animal.age }}m.</h6>
+            <h6 class="card-subtitle text-center"><i class="fas fa-heart" style="color:red"></i> <span>{{ animal.heartCount }}</span></h6>
             <a href="{{ path('animal_show', {'id': animal.id}) }}">
                 <div class="imgContainer">
                     <img class="img-fluid" src="/uploads/{{ animal.picture }}" width="380"/>
@@ -135,7 +136,7 @@
             <div class="card-body" style="background-color: white;">
                 <h6 class="card-subtitle"></h6>
                 <hr>
-                {{ animal.description }}
+                <p>Prieglaudoje nuo: <span>{{ animal.createdAt ? animal.createdAt|date('Y-m-d') : '' }}</span></p>
                 {% if animal.isAvailable == 0 %}
                     <hr>
                     <a href="{{ path('reservation_show', {'id': animal.id}) }}"><i class="fa fa-calendar-check fa-2x"></i> Rezervuoti susitikimo laiką</a>
