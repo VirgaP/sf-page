@@ -32,7 +32,10 @@ class MessageType extends AbstractType
                 'label' => 'Telefono numeris'
             ])
             ->add('message', TextareaType::class, [
-                'label' => 'Žinutė'
+                'label' => 'Žinutė',
+                'attr' => [
+                    'rows' => 5,
+                ],
             ])
         ;
     }

@@ -17,6 +17,7 @@ class CommentType extends AbstractType
                 'label' => false,
                 'attr' => [
                     'placeholder' => 'Naujas komentaras',
+                    'rows' => 3,
                 ],
             ])
         ;

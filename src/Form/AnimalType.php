@@ -32,7 +32,8 @@ class AnimalType extends AbstractType
             ->add('age', IntegerType::class, [
                 'label' => 'Amžius',
                 'attr' => [
-                    'min' => 1,
+                    'step' => 0.1,
+                    'min' => 0.1,
                     'max' => 100,
                 ]
             ])
@@ -48,6 +49,9 @@ class AnimalType extends AbstractType
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Aprašymas',
+                'attr' => [
+                    'rows' => 5,
+                ],
             ])
             ->add('isAvailable', CheckboxType::class, [
                 'label' => 'Ar gyvūnas atiduotas?',

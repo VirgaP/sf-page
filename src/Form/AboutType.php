@@ -23,6 +23,9 @@ class AboutType extends AbstractType
         $builder
             ->add('text', TextareaType::class, [
                 'label' => 'Tekstas',
+                'attr' => [
+                    'rows' => 20,
+                ],
             ])
         ;
     }
